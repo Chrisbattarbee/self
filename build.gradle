@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'com.cbattarbee.self-api'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://dl.bintray.com/palantir/releases/' }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    classpath 'com.palantir.gradle.conjure:gradle-conjure:4.6.2'
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://dl.bintray.com/palantir/releases/' }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
