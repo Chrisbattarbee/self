@@ -1,0 +1,33 @@
+name: "Release: Docker Publish"
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  pre-release:
+    name: "Pre Release"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: "Run tests"
+        run: ./gradlew check
+
+      - name: "Build distributable tar"
+        run: ./gradlew distTar
+
+      - name: "Cd into docker directory"
+        run: cd scripts
+
+      - name: "Untar distribution in docker dir"
+        run: tar -xf "./self-server/build/distributions/self-server-*.tar" -C ./ --strip-components=1
+
+      - name: "Build and release docker image"
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          tags: chrisbattarbee/self-server:latest
+          secrets: |
+            "github_token=${{ secrets.GITHUB_TOKEN }}"
