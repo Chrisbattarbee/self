@@ -5,8 +5,8 @@ on:
     types: [published]
 
 jobs:
-  pre-release:
-    name: "Pre Release"
+  release:
+    name: "Release: Docker Publish"
     runs-on: "ubuntu-latest"
 
     steps:
