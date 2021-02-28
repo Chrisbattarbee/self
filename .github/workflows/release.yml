@@ -26,7 +26,7 @@ jobs:
       - name: "Build and release docker image"
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./scripts
           tags: chrisbattarbee/self-server:latest
           secrets: |
             "github_token=${{ secrets.GITHUB_TOKEN }}"
