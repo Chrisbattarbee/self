@@ -9,7 +9,7 @@ rm -rf $DEST
 mkdir -p $DEST/self-server/var/conf
 
 cp ./scripts/Dockerfile $DEST/
-tar -xf "./self-server/build/distributions/self-server-*.tar" -C $DEST/self-server --strip-components=1
+tar -xf ./self-server/build/distributions/self-server-*.tar -C $DEST/self-server --strip-components=1
 cp ./self-server/var/conf/recipes.yml $DEST/self-server/var/conf
 
 cd $DEST

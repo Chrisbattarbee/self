@@ -18,15 +18,11 @@ jobs:
       - name: "Build distributable tar"
         run: ./gradlew distTar
 
-      - name: "Cd into docker directory and untar dist"
-        run: |
-          cd scripts
-          tar -xf ../self-server/build/distributions/self-server-*.tar -C ./ --strip-components=1
-
-      - name: "Build and release docker image"
-        uses: docker/build-push-action@v2
+      - name: "Log in to docker hub."
+        uses: docker/login-action@v1
         with:
-          context: ./scripts
-          tags: chrisbattarbee/self-server:latest
-          secrets: |
-            "github_token=${{ secrets.GITHUB_TOKEN }}"
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: "Build docker image and push to docker hub"
+        run: ./scripts/build_docker.sh
