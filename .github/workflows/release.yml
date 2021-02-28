@@ -18,11 +18,10 @@ jobs:
       - name: "Build distributable tar"
         run: ./gradlew distTar
 
-      - name: "Cd into docker directory"
-        run: cd scripts
-
-      - name: "Untar distribution in docker dir"
-        run: tar -xf ../self-server/build/distributions/self-server-*.tar -C ./ --strip-components=1
+      - name: "Cd into docker directory and untar dist"
+        run: |
+          cd scripts
+          tar -xf ../self-server/build/distributions/self-server-*.tar -C ./ --strip-components=1
 
       - name: "Build and release docker image"
         uses: docker/build-push-action@v2
