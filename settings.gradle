@@ -1,0 +1,8 @@
+rootProject.name = 'self'
+
+include 'self-server'
+include 'self-api'
+include 'self-api:self-api-objects'
+include 'self-api:self-api-jersey'
+include 'self-api:self-api-typescript'
+

@@ -1,0 +1,29 @@
+apply plugin: 'application'
+
+dependencies {
+    annotationProcessor 'org.immutables:value'
+    compileOnly 'org.immutables:value::annotations'
+
+    implementation project(':self-api:self-api-objects')
+    implementation project(':self-api:self-api-jersey')
+
+    implementation 'com.google.guava:guava'
+    implementation 'com.palantir.conjure.java.runtime:conjure-java-jackson-serialization'
+    implementation 'com.palantir.conjure.java.runtime:conjure-java-jersey-server'
+    implementation 'com.palantir.websecurity:dropwizard-web-security'
+    implementation 'io.dropwizard:dropwizard-core'
+    implementation 'org.slf4j:slf4j-api'
+
+    testImplementation 'junit:junit'
+    testImplementation 'org.assertj:assertj-core'
+    testImplementation 'io.dropwizard:dropwizard-testing'
+    testImplementation 'com.palantir.conjure.java.runtime:conjure-java-jaxrs-client'
+    testImplementation 'com.palantir.conjure.java.api:test-utils'
+}
+
+mainClassName = 'com.chrisbattarbee.self.RecipeBookApplication'
+
+run {
+    args 'server', 'var/conf/recipes.yml'
+}
+

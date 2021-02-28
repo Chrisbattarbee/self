@@ -1,0 +1,78 @@
+types:
+  definitions:
+    default-package: com.chrisbattarbee.self.recipe
+    objects:
+      Temperature:
+        fields:
+          degree: double
+          unit: TemperatureUnit
+
+      Ingredient:
+        alias: string
+
+      RecipeName:
+        alias: string
+
+      BakeStep:
+        fields:
+          temperature: Temperature
+          durationInSeconds: integer
+
+      RecipeStep:
+        union:
+          mix: set<Ingredient>
+          chop: Ingredient
+          bake: BakeStep
+
+      Recipe:
+        fields:
+          name: RecipeName
+          steps: list<RecipeStep>
+
+      TemperatureUnit:
+        values:
+          - FAHRENHEIT
+          - CELSIUS
+
+    errors:
+      RecipeNotFound:
+        namespace: Recipe
+        code: NOT_FOUND
+        safe-args:
+          name: RecipeName
+
+services:
+  RecipeBookService:
+    name: Recipe Book
+    package: com.chrisbattarbee.self.recipe
+    base-path: /recipes
+    docs: |
+      APIs for retrieving recipes
+
+    endpoints:
+      createRecipe:
+        http: POST /
+        args:
+          createRecipeRequest:
+            param-type: body
+            type: Recipe
+
+      getRecipe:
+        http: GET /{name}
+        args:
+          name: RecipeName
+        returns: Recipe
+        docs: |
+          Retrieves a recipe for the given name.
+
+          @param name
+                 The name of the recipe
+
+      getAllRecipes:
+        http: GET /
+        returns: set<Recipe>
+
+      deleteRecipe:
+        http: DELETE /{name}
+        args:
+          name: RecipeName
