@@ -1,13 +1,13 @@
 FROM java:8u111-jdk-alpine
 
 RUN set -eux; \
-    mkdir -p /opt/palantir/services;
+    mkdir -p /opt/self/services;
 
-ADD recipe-example-server/ /opt/palantir/services/recipe-example-server
+ADD self-server/ /opt/self/services/self-server
 
-RUN chmod +x /opt/palantir/services/recipe-example-server/bin/recipe-example-server
+RUN chmod +x /opt/self/services/self-server
 
 EXPOSE 8000
 
-WORKDIR /opt/palantir/services/recipe-example-server/
-ENTRYPOINT ["./bin/recipe-example-server", "server", "var/conf/recipes.yml"]
+WORKDIR /opt/self/services/self-server/
+ENTRYPOINT ["./bin/self-server", "server", "var/conf/recipes.yml"]
