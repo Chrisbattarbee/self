@@ -22,7 +22,7 @@ types:
 services:
   RecipeBookService:
     name: Recipe Book
-    package: com.company.product
+    package: com.chrisbattarbee.self
     base-path: /recipes
     endpoints:
       createRecipe:
