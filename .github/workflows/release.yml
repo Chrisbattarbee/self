@@ -22,7 +22,7 @@ jobs:
         run: cd scripts
 
       - name: "Untar distribution in docker dir"
-        run: tar -xf "../self-server/build/distributions/self-server-*.tar" -C ./ --strip-components=1
+        run: tar -xf ../self-server/build/distributions/self-server-*.tar -C ./ --strip-components=1
 
       - name: "Build and release docker image"
         uses: docker/build-push-action@v2
