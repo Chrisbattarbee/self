@@ -1,7 +1,7 @@
 apply plugin: 'com.palantir.conjure'
 
 dependencies {
-    conjureCompiler 'com.palantir.conjure:conjure:4.15.0'
+    conjureCompiler 'com.palantir.conjure:conjure:4.14.0'
     conjureJava 'com.palantir.conjure.java:conjure-java:5.44.0'
     conjureTypeScript 'com.palantir.conjure.typescript:conjure-typescript:4.6.0'
 }
