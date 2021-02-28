@@ -13,10 +13,11 @@ plugins {
 }
 
 group 'com.chrisbattarbee.self-api'
-version '1.0-SNAPSHOT'
+version '0.0.1'
 
 allprojects {
     repositories {
         maven { url 'https://dl.bintray.com/palantir/releases/' }
     }
+    version rootProject.version
 }
