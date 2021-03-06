@@ -31,7 +31,7 @@ task self_magritte_build {
         }
         def result3 = exec {
             executable = "${python_path}"
-            args = ['-m', 'pex', '.', '-r', 'requirements.txt', '-e', 'self_magritte:main', '-o', 'build/self_magritte.pex']
+            args = ['-m', 'pex', '.', '-r', 'requirements.txt', '-e', 'self_magritte:main', '-o', 'build/self-magritte']
         }
     }
 }

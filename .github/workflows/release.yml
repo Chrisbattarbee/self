@@ -15,6 +15,9 @@ jobs:
       - name: "Run tests"
         run: ./gradlew check
 
+      - name: "Build all projects"
+        run: ./gradlew build
+
       - name: "Build distributable tar"
         run: ./gradlew distTar
 
@@ -24,5 +27,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: "Build docker image and push to docker hub"
-        run: ./scripts/build_docker.sh
+      - name: "Build self server docker image and push to docker hub"
+        run: ./scripts/self-server/build_docker.sh
+
+      - name: "Build self magritte docker image and push to docker hub"
+        run: ./scripts/self-server/build_docker.sh
