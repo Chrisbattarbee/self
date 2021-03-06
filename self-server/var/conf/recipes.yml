@@ -31,4 +31,14 @@ recipes:
             degree: 220
             unit: "CELSIUS"
           durationInSeconds: 2700
+  - name: "hot baked potatoes"
+    steps:
+      - type: mix
+        mix: ["rub oil all over the potatoes", "Rub salt all over the potatoes"]
+      - type: bake
+        bake:
+          temperature:
+            degree: 400
+            unit: "CELSIUS"
+          durationInSeconds: 2700
 
