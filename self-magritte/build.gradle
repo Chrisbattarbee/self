@@ -1,0 +1,41 @@
+def python_path = 'python'
+
+task setupConda {
+    def build_dir = project(':self-magritte').buildDir
+    def result = exec {
+        executable = "conda"
+        args = ['create', '--prefix', "${build_dir}/self-magritte-venv", 'python=3.9']
+    }
+    python_path = "${build_dir}/self-magritte-venv/bin/python"
+}
+
+task self_magritte_check {
+    new ByteArrayOutputStream().withStream { os ->
+        def result = exec {
+            executable = "${python_path}"
+            args = ['-m', 'unittest', 'discover', 'test']
+        }
+    }
+}
+self_magritte_check.dependsOn setupConda
+
+task self_magritte_build {
+    new ByteArrayOutputStream().withStream { os ->
+        def result = exec {
+            executable = "${python_path}"
+            args = ['-m', 'pip', 'install', 'pex']
+        }
+        def result2 = exec{
+            executable = "${python_path}"
+            args = ['setup.py', 'install']
+        }
+        def result3 = exec {
+            executable = "${python_path}"
+            args = ['-m', 'pex', '.', '-r', 'requirements.txt', '-e', 'self_magritte:main', '-o', 'build/self_magritte.pex']
+        }
+    }
+}
+self_magritte_build.dependsOn setupConda
+
+project.tasks.check.dependsOn(self_magritte_check)
+project.tasks.build.dependsOn(self_magritte_check)

@@ -1,6 +1,6 @@
 types:
   definitions:
-    default-package: com.chrisbattarbee.self.recipe
+    default-package: com.chrisbattarbee.self.calories
     objects:
       Temperature:
         fields:
@@ -42,15 +42,15 @@ types:
           name: RecipeName
 
 services:
-  RecipeBookService:
-    name: Recipe Book
-    package: com.chrisbattarbee.self.recipe
-    base-path: /recipes
+  CalorieService:
+    name: Calories
+    package: com.chrisbattarbee.self.calories
+    base-path: /calories
     docs: |
-      APIs for retrieving recipes
+      API for retrieving and adding calorie information.
 
     endpoints:
-      createRecipe:
+      add:
         http: POST /
         args:
           createRecipeRequest:
