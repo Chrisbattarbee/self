@@ -10,4 +10,4 @@ RUN chmod +x /opt/self/services/self-server
 EXPOSE 8000
 
 WORKDIR /opt/self/services/self-server/
-ENTRYPOINT ["./bin/self-server", "server", "var/conf/recipes.yml"]
+ENTRYPOINT ["./bin/self-server", "server", "var/conf/selfserver.yml"]
