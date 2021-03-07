@@ -36,7 +36,10 @@ types:
           sugar: double
 
     errors:
-      MealsNotFound:
+      Internal:
+        namespace: Calories
+        code: INTERNAL
+      NotFound:
         namespace: Calories
         code: NOT_FOUND
         safe-args:
@@ -57,9 +60,21 @@ services:
           updateDayRequest:
             param-type: body
             type: MealsForDay
+      getDailyCalories:
+        http: GET /calories/{date}
+        args:
+          date:
+            type: string
+        returns: MealsForDay
       updateDailyMacroGoals:
         http: PUT /macrogoals
         args:
           updateMacroGoalsRequest:
             param-type: body
             type: MacroGoals
+      getDailyMacroGoals:
+        http: GET /macrogoals/{date}
+        args:
+          date:
+            type: string
+        returns: MacroGoals

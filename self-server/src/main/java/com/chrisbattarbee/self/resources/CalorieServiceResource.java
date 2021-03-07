@@ -20,6 +20,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
@@ -28,6 +29,7 @@ import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
 import com.chrisbattarbee.self.calories.CalorieService;
+import com.chrisbattarbee.self.calories.CaloriesErrors;
 import com.chrisbattarbee.self.calories.MacroGoals;
 import com.chrisbattarbee.self.calories.MealsForDay;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -89,6 +91,23 @@ public final class CalorieServiceResource implements CalorieService {
     }
 
     @Override
+    public MealsForDay getDailyCalories(String date) {
+        Table calorieTable = documentDynamoClient.getTable(CALORIES_DYNAMO_TABLE_NAME);
+        Item dailyCalories = calorieTable.getItem(new PrimaryKey("date", date));
+        if (dailyCalories == null) {
+            logger.info("Could not find requested object with key {} in dynamo.", SafeArg.of("date", date));
+            throw CaloriesErrors.notFound(date);
+        }
+        try {
+            MealsForDay mealsForDay = objectMapper.readValue(dailyCalories.toJSON(), MealsForDay.class);
+            return mealsForDay;
+        } catch (JsonProcessingException e) {
+            logger.info("Could not deserialize object stored in dynamo into Java object.", e);
+            throw CaloriesErrors.internal();
+        }
+    }
+
+    @Override
     public void updateDailyMacroGoals(MacroGoals updateMacroGoalsRequest) {
         logger.info(
                 "Received request to update macro goals on {}", SafeArg.of("date", updateMacroGoalsRequest.getDate()));
@@ -98,6 +117,23 @@ public final class CalorieServiceResource implements CalorieService {
             logger.info("Successfully put macro goal item into dynamodb.");
         } catch (JsonProcessingException e) {
             logger.error("Failed to put macro goal item into dynamodb.", e);
+        }
+    }
+
+    @Override
+    public MacroGoals getDailyMacroGoals(String date) {
+        Table macroGoalsTable = documentDynamoClient.getTable(MACRO_GOALS_DYNAMO_TABLE_NAME);
+        Item macroGoals = macroGoalsTable.getItem(new PrimaryKey("date", date));
+        if (macroGoals == null) {
+            logger.info("Could not find requested object with key {} in dynamo.", SafeArg.of("date", date));
+            throw CaloriesErrors.notFound(date);
+        }
+        try {
+            MacroGoals goals = objectMapper.readValue(macroGoals.toJSON(), MacroGoals.class);
+            return goals;
+        } catch (JsonProcessingException e) {
+            logger.info("Could not deserialize object stored in dynamo into Java object.", e);
+            throw CaloriesErrors.internal();
         }
     }
 }
