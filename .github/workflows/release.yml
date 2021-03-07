@@ -18,6 +18,9 @@ jobs:
       - name: "Build all projects"
         run: ./gradlew build
 
+      - name: "Build self magritte"
+        run: ./gradlew self_magritte_build
+
       - name: "Build distributable tar"
         run: ./gradlew distTar
 
