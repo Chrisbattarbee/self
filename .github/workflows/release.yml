@@ -31,4 +31,4 @@ jobs:
         run: ./scripts/self-server/build_docker.sh
 
       - name: "Build self magritte docker image and push to docker hub"
-        run: ./scripts/self-server/build_docker.sh
+        run: ./scripts/self-magritte/build_docker.sh
