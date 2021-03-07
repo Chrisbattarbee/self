@@ -11,6 +11,7 @@ def run_job(config):
 
     self_api_client.update_daily_calories(meals_for_day)
     self_api_client.update_daily_macro_goals(macro_goals)
+    print("Updated calories.")
 
 
 def current_iso_date():

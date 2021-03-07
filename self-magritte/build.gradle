@@ -22,9 +22,8 @@ tasks.register('self_magritte_build') {
                 args = ['-m', 'pip', 'install', 'pex']
             }
             def result2 = exec{
-                workingDir = "${projectDir}/../self-api/self-api-python/python"
                 executable = "${python_path}"
-                args = ['setup.py', 'install']
+                args = ['-m', 'pip', 'install', "${projectDir}/../self-api/self-api-python/python"]
             }
             def result3 = exec{
                 executable = "${python_path}"

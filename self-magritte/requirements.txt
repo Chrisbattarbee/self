@@ -2,3 +2,4 @@ requests
 myfitnesspal
 conjure-python-client
 schedule
+../self-api/self-api-python/python
