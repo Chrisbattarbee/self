@@ -16,10 +16,9 @@ def get_self_api_calories_client():
     return client
 
 
-def get_current_day_logs():
+def get_logs_for_date(date):
     client = myfitnesspal.Client(username=conf.calories_conf['username'], password=conf.calories_conf['password'])
-    log = client.get_date(2020, 3, 1)
-    log.goals['calories']
+    log = client.get_date(date)
     return log
 
 
@@ -57,11 +56,10 @@ def convert_mfp_day_logs_to_self_api_format(day_logs):
             )
         )
 
-
     return meals, macro_goals
 
 
-logs = get_current_day_logs()
+logs = get_logs_for_date(current_iso_date())
 meals, macro_goals = convert_mfp_day_logs_to_self_api_format(logs)
 self_api_client = get_self_api_calories_client()
 
