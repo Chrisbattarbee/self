@@ -19,21 +19,26 @@ package com.chrisbattarbee.self.resources;
 import com.chrisbattarbee.self.calories.CalorieService;
 import com.chrisbattarbee.self.calories.MacroGoals;
 import com.chrisbattarbee.self.calories.Meal;
+import com.palantir.logsafe.SafeArg;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class CalorieServiceResource implements CalorieService {
+    private Logger logger = LoggerFactory.getLogger(CalorieServiceResource.class);
+
     public CalorieServiceResource() {
     }
 
     @Override
     public void updateDailyCalories(String date, List<Meal> updateDayRequest) {
-        System.out.println(date);
-        System.out.println(updateDayRequest.toString());
+        logger.info("{}", SafeArg.of("date", date));
+        logger.info("{}", SafeArg.of("update", updateDayRequest.toString()));
     }
 
     @Override
     public void updateDailyMacroGoals(String date, MacroGoals updateMacroGoalsRequest) {
-        System.out.println(date);
-        System.out.println(updateMacroGoalsRequest.toString());
+        logger.info("{}", SafeArg.of("date", date));
+        logger.info("{}", SafeArg.of("goals", updateMacroGoalsRequest.toString()));
     }
 }
