@@ -15,6 +15,9 @@ jobs:
       - name: "Run tests"
         run: ./gradlew check
 
+      - name: "Compile conjure definitions"
+        run: ./gradlew compileConjure
+
       - name: "Build all projects"
         run: ./gradlew build
 
