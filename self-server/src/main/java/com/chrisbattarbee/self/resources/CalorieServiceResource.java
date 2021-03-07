@@ -16,6 +16,11 @@
 
 package com.chrisbattarbee.self.resources;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.chrisbattarbee.self.Utils;
 import com.chrisbattarbee.self.calories.CalorieService;
 import com.chrisbattarbee.self.calories.MacroGoals;
 import com.chrisbattarbee.self.calories.Meal;
@@ -26,8 +31,12 @@ import org.slf4j.LoggerFactory;
 
 public final class CalorieServiceResource implements CalorieService {
     private Logger logger = LoggerFactory.getLogger(CalorieServiceResource.class);
+    AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
+    DynamoDB dynamoDB = new DynamoDB(client);
+    DynamoDBMapper mapper = new DynamoDBMapper(client);
 
     public CalorieServiceResource() {
+        Utils.addMapperAnnotationsToConjureClass(CalorieService.class);
     }
 
     @Override

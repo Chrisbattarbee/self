@@ -16,92 +16,10 @@
 
 package com.chrisbattarbee.self;
 
-import static com.palantir.conjure.java.api.testing.Assertions.assertThat;
-
-import com.chrisbattarbee.self.recipe.BakeStep;
-import com.chrisbattarbee.self.recipe.Ingredient;
-import com.chrisbattarbee.self.recipe.Recipe;
-import com.chrisbattarbee.self.recipe.RecipeBookService;
-import com.chrisbattarbee.self.recipe.RecipeErrors;
-import com.chrisbattarbee.self.recipe.RecipeName;
-import com.chrisbattarbee.self.recipe.RecipeStep;
-import com.chrisbattarbee.self.recipe.Temperature;
-import com.chrisbattarbee.self.recipe.TemperatureUnit;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.io.Resources;
-import com.palantir.conjure.java.api.config.service.ServiceConfiguration;
-import com.palantir.conjure.java.api.config.service.UserAgent;
-import com.palantir.conjure.java.api.config.ssl.SslConfiguration;
-import com.palantir.conjure.java.api.testing.Assertions;
-import com.palantir.conjure.java.client.config.ClientConfigurations;
-import com.palantir.conjure.java.client.jaxrs.JaxRsClient;
-import com.palantir.conjure.java.okhttp.NoOpHostEventsSink;
-import io.dropwizard.testing.junit.DropwizardAppRule;
-import java.nio.file.Paths;
-import java.util.Set;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
 import org.junit.Test;
 
 public class RecipeBookApplicationTest {
-    private static final String TRUSTSTORE_PATH = "src/test/resources/trustStore.jks";
-
-    @ClassRule
-    public static final DropwizardAppRule<SelfServerConfiguration> RULE = new DropwizardAppRule<>(
-            SelfServer.class, Resources.getResource("test.yml").getPath());
-
-    private static RecipeBookService client;
-
-    @BeforeClass
-    public static void before() {
-        client = JaxRsClient.create(
-                RecipeBookService.class,
-                UserAgent.of(UserAgent.Agent.of("test", "0.0.0")),
-                NoOpHostEventsSink.INSTANCE,
-                ClientConfigurations.of(ServiceConfiguration.builder()
-                        .addUris(String.format("http://localhost:%d/examples/api/", RULE.getLocalPort()))
-                        .security(SslConfiguration.of(Paths.get(TRUSTSTORE_PATH)))
-                        .build()));
-    }
 
     @Test
-    public void getRecipeUsingInvalidName() {
-        Assertions.assertThatRemoteExceptionThrownBy(() -> client.getRecipe(RecipeName.of("doesNotExist")))
-                .isGeneratedFromErrorType(RecipeErrors.RECIPE_NOT_FOUND);
-    }
-
-    @Test
-    public void getRecipe() {
-        RecipeName recipeName = RecipeName.of("roasted broccoli with garlic");
-        Recipe recipe = client.getRecipe(recipeName);
-        Recipe expectedRecipe = RULE.getConfiguration().getRecipes().stream()
-                .filter(r -> r.getName().equals(recipeName))
-                .findFirst()
-                .get();
-        assertThat(recipe).isEqualTo(expectedRecipe);
-
-        Set<Recipe> recipes = client.getAllRecipes();
-        assertThat(recipes).isEqualTo(RULE.getConfiguration().getRecipes());
-    }
-
-    @Test
-    public void getRecipeWithBake() {
-        RecipeName recipeName = RecipeName.of("baked potatoes");
-        Recipe recipe = client.getRecipe(recipeName);
-        Recipe expectedRecipe = Recipe.of(
-                recipeName,
-                ImmutableList.of(
-                        RecipeStep.mix(ImmutableSet.of(
-                                Ingredient.of("rub oil all over the potatoes"),
-                                Ingredient.of("Rub salt all over the potatoes"))),
-                        RecipeStep.bake(BakeStep.builder()
-                                .temperature(Temperature.builder()
-                                        .degree(220)
-                                        .unit(TemperatureUnit.CELSIUS)
-                                        .build())
-                                .durationInSeconds(2700)
-                                .build())));
-        assertThat(recipe).isEqualTo(expectedRecipe);
-    }
+    public void getRecipeUsingInvalidName() {}
 }
