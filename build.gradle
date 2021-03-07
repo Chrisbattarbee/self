@@ -25,6 +25,7 @@ apply plugin: 'com.palantir.baseline'
 apply plugin: 'com.palantir.git-version'
 
 allprojects {
+    apply plugin: 'java-base'
     apply plugin: 'com.palantir.java-format'
     group 'com.chrisbattarbee.self'
     version '0.0.1'
@@ -32,6 +33,9 @@ allprojects {
     repositories {
         mavenCentral()
         maven { url 'https://dl.bintray.com/palantir/releases/' }
+    }
+    dependencies {
+        rootConfiguration platform('com.amazonaws:aws-java-sdk-bom')
     }
 }
 

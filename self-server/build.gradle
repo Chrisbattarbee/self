@@ -7,12 +7,14 @@ dependencies {
     implementation project(':self-api:self-api-objects')
     implementation project(':self-api:self-api-jersey')
 
+    implementation 'com.amazonaws:aws-java-sdk-dynamodb'
     implementation 'com.google.guava:guava'
     implementation 'com.palantir.conjure.java.runtime:conjure-java-jackson-serialization'
     implementation 'com.palantir.conjure.java.runtime:conjure-java-jersey-server'
     implementation 'com.palantir.websecurity:dropwizard-web-security'
     implementation 'io.dropwizard:dropwizard-core'
     implementation 'org.slf4j:slf4j-api'
+    implementation 'com.github.XDean:Java-EX'
 
     testImplementation 'junit:junit'
     testImplementation 'org.assertj:assertj-core'
@@ -21,9 +23,9 @@ dependencies {
     testImplementation 'com.palantir.conjure.java.api:test-utils'
 }
 
-mainClassName = 'com.chrisbattarbee.self.RecipeBookApplication'
+mainClassName = 'com.chrisbattarbee.self.SelfServer'
 
 run {
-    args 'server', 'var/conf/recipes.yml'
+    args 'server', 'var/conf/selfserver.yml'
 }
 

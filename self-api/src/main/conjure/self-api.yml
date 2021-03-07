@@ -1,78 +1,65 @@
 types:
   definitions:
-    default-package: com.chrisbattarbee.self.recipe
+    default-package: com.chrisbattarbee.self.calories
     objects:
-      Temperature:
+
+      FoodEntry:
         fields:
-          degree: double
-          unit: TemperatureUnit
+          name: string
+          calories: double
+          carbohydrates: double
+          fat: double
+          protein: double
+          sodium: double
+          sugar: double
+          quantity: double
+          unit: string
 
-      Ingredient:
-        alias: string
-
-      RecipeName:
-        alias: string
-
-      BakeStep:
+      Meal:
         fields:
-          temperature: Temperature
-          durationInSeconds: integer
+          entries: list<FoodEntry>
+          name: string
 
-      RecipeStep:
-        union:
-          mix: set<Ingredient>
-          chop: Ingredient
-          bake: BakeStep
-
-      Recipe:
+      MealsForDay:
         fields:
-          name: RecipeName
-          steps: list<RecipeStep>
+          meals: list<Meal>
+          date: string
 
-      TemperatureUnit:
-        values:
-          - FAHRENHEIT
-          - CELSIUS
+      MacroGoals:
+        fields:
+          date: string
+          calories: double
+          carbohydrates: double
+          fat: double
+          protein: double
+          sodium: double
+          sugar: double
 
     errors:
-      RecipeNotFound:
-        namespace: Recipe
+      MealsNotFound:
+        namespace: Calories
         code: NOT_FOUND
         safe-args:
-          name: RecipeName
+          date: string
 
 services:
-  RecipeBookService:
-    name: Recipe Book
-    package: com.chrisbattarbee.self.recipe
-    base-path: /recipes
+  CalorieService:
+    name: Calorie Tracking Service
+    package: com.chrisbattarbee.self.calories
+    base-path: /calories
     docs: |
-      APIs for retrieving recipes
+      API for retrieving and adding calorie information.
 
     endpoints:
-      createRecipe:
-        http: POST /
+      updateDailyCalories:
+        http: PUT /calories
         args:
-          createRecipeRequest:
+          updateDayRequest:
             param-type: body
-            type: Recipe
-
-      getRecipe:
-        http: GET /{name}
+            type: MealsForDay
+      updateDailyMacroGoals:
+        http: PUT /macrogoals
         args:
-          name: RecipeName
-        returns: Recipe
-        docs: |
-          Retrieves a recipe for the given name.
-
-          @param name
-                 The name of the recipe
-
-      getAllRecipes:
-        http: GET /
-        returns: set<Recipe>
-
-      deleteRecipe:
-        http: DELETE /{name}
-        args:
-          name: RecipeName
+          updateMacroGoalsRequest:
+            param-type: body
+            type: MacroGoals

@@ -1,0 +1,52 @@
+def python_path = 'python'
+
+dependencies {
+    implementation project(':self-api:self-api-python')
+}
+
+tasks.register('setupConda') {
+    def build_dir = project(':self-magritte').buildDir
+    def result = exec {
+        executable = "conda"
+        args = ['create', '--prefix', "${build_dir}/self-magritte-venv", 'python=3.9']
+    }
+    python_path = "${build_dir}/self-magritte-venv/bin/python"
+}
+
+tasks.register('self_magritte_build') {
+    dependsOn setupConda
+    doLast {
+        new ByteArrayOutputStream().withStream { os ->
+            def result = exec {
+                executable = "${python_path}"
+                args = ['-m', 'pip', 'install', 'pex']
+            }
+            def result2 = exec{
+                workingDir = "${projectDir}/../self-api/self-api-python/python"
+                executable = "${python_path}"
+                args = ['setup.py', 'install']
+            }
+            def result3 = exec{
+                executable = "${python_path}"
+                args = ['setup.py', 'install']
+            }
+            def result4 = exec {
+                executable = "${python_path}"
+                args = ['-m', 'pex', '.', '-r', 'requirements.txt', '-e', 'self_magritte:main', '-o', 'build/self-magritte']
+            }
+        }
+    }
+}
+
+
+tasks.register('self_magritte_check') {
+    dependsOn self_magritte_build
+    doLast {
+        new ByteArrayOutputStream().withStream {os ->
+            def result = exec {
+                executable = "${python_path}"
+                args = ['-m', 'unittest', 'discover', 'test']
+            }
+        }
+    }
+}

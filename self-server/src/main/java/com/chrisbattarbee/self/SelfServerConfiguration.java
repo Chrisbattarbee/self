@@ -16,32 +16,17 @@
 
 package com.chrisbattarbee.self;
 
-import com.chrisbattarbee.self.recipe.Recipe;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.palantir.websecurity.WebSecurityConfigurable;
 import com.palantir.websecurity.WebSecurityConfiguration;
 import io.dropwizard.Configuration;
-import java.util.Set;
 import javax.validation.Valid;
-import org.hibernate.validator.constraints.NotEmpty;
 
-public final class RecipeBookConfiguration extends Configuration implements WebSecurityConfigurable {
-
-    @NotEmpty
-    @JsonProperty("recipes")
-    private Set<Recipe> recipes;
-
-    public void setRecipes(Set<Recipe> recipes) {
-        this.recipes = recipes;
-    }
+public final class SelfServerConfiguration extends Configuration implements WebSecurityConfigurable {
 
     @JsonProperty("webSecurity")
     @Valid
     private final WebSecurityConfiguration webSecurity = WebSecurityConfiguration.DEFAULT;
-
-    public Set<Recipe> getRecipes() {
-        return recipes;
-    }
 
     @Override
     public WebSecurityConfiguration getWebSecurityConfiguration() {
