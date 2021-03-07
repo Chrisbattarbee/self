@@ -1,23 +1,32 @@
 import myfitnesspal
-import conf
 from self_api.self_calories import CalorieService, FoodEntry, Meal, MacroGoals, MealsForDay
 from conjure_python_client import RequestsClient, ServiceConfiguration
 import datetime
+
+
+def run_job(config):
+    logs = get_logs_for_date(current_iso_date(), config['calories']['mfp_username'], config['calories']['mfp_password'])
+    meals_for_day, macro_goals = convert_mfp_day_logs_to_self_api_format(current_iso_date().isoformat(),logs)
+    self_api_client = get_self_api_calories_client(config['server_location'])
+
+    self_api_client.update_daily_calories(meals_for_day)
+    self_api_client.update_daily_macro_goals(macro_goals)
+    print("Updated calories.")
 
 
 def current_iso_date():
     return datetime.datetime.now().date()
 
 
-def get_self_api_calories_client():
+def get_self_api_calories_client(server_location):
     config = ServiceConfiguration()
-    config.uris = [conf.calories_conf['self_api_server']]
+    config.uris = [server_location]
     client = RequestsClient.create(CalorieService, user_agent="self-magritte", service_config=config)
     return client
 
 
-def get_logs_for_date(date):
-    client = myfitnesspal.Client(username=conf.calories_conf['username'], password=conf.calories_conf['password'])
+def get_logs_for_date(date, mfp_username, mfp_password):
+    client = myfitnesspal.Client(username=mfp_username, password=mfp_password)
     log = client.get_date(date)
     return log
 
@@ -57,13 +66,4 @@ def convert_mfp_day_logs_to_self_api_format(date, day_logs):
             )
         )
 
-
     return MealsForDay(date=date,meals=meals), macro_goals
-
-
-logs = get_logs_for_date(current_iso_date())
-meals_for_day, macro_goals = convert_mfp_day_logs_to_self_api_format(current_iso_date().isoformat(),logs)
-self_api_client = get_self_api_calories_client()
-
-self_api_client.update_daily_calories(meals_for_day)
-self_api_client.update_daily_macro_goals(macro_goals)

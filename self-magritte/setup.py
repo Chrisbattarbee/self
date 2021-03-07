@@ -3,5 +3,5 @@ setup(
     name='self-magritte',
     version='0.0.1',
     package_dir={'self_magritte': 'src'},
-    packages=find_packages()
+    packages=['self_magritte']
 )
