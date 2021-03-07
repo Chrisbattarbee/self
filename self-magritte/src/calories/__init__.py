@@ -1,6 +1,6 @@
 import myfitnesspal
 import conf
-from self_api.self_calories import CalorieService, FoodEntry, Meal, MacroGoals
+from self_api.self_calories import CalorieService, FoodEntry, Meal, MacroGoals, MealsForDay
 from conjure_python_client import RequestsClient, ServiceConfiguration
 import datetime
 
@@ -22,14 +22,15 @@ def get_logs_for_date(date):
     return log
 
 
-def convert_mfp_day_logs_to_self_api_format(day_logs):
+def convert_mfp_day_logs_to_self_api_format(date, day_logs):
     macro_goals = MacroGoals(
         calories=day_logs.goals['calories'],
         carbohydrates=day_logs.goals['carbohydrates'],
         fat=day_logs.goals['fat'],
         protein=day_logs.goals['protein'],
         sodium=day_logs.goals['sodium'],
-        sugar=day_logs.goals['sugar']
+        sugar=day_logs.goals['sugar'],
+        date=date,
     )
 
     meals = []
@@ -56,12 +57,13 @@ def convert_mfp_day_logs_to_self_api_format(day_logs):
             )
         )
 
-    return meals, macro_goals
+
+    return MealsForDay(date=date,meals=meals), macro_goals
 
 
 logs = get_logs_for_date(current_iso_date())
-meals, macro_goals = convert_mfp_day_logs_to_self_api_format(logs)
+meals_for_day, macro_goals = convert_mfp_day_logs_to_self_api_format(current_iso_date().isoformat(),logs)
 self_api_client = get_self_api_calories_client()
 
-self_api_client.update_daily_calories(current_iso_date().isoformat(), meals)
-self_api_client.update_daily_macro_goals(current_iso_date().isoformat(), macro_goals)
+self_api_client.update_daily_calories(meals_for_day)
+self_api_client.update_daily_macro_goals(macro_goals)

@@ -20,8 +20,14 @@ types:
           entries: list<FoodEntry>
           name: string
 
+      MealsForDay:
+        fields:
+          meals: list<Meal>
+          date: string
+
       MacroGoals:
         fields:
+          date: string
           calories: double
           carbohydrates: double
           fat: double
@@ -46,16 +52,14 @@ services:
 
     endpoints:
       updateDailyCalories:
-        http: PUT /calories/{date}
+        http: PUT /calories
         args:
-          date: string
           updateDayRequest:
             param-type: body
-            type: list<Meal>
+            type: MealsForDay
       updateDailyMacroGoals:
-        http: PUT /macrogoals/{date}
+        http: PUT /macrogoals
         args:
-          date: string
           updateMacroGoalsRequest:
             param-type: body
             type: MacroGoals
