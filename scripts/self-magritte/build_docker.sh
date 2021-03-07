@@ -14,4 +14,4 @@ cp ./self-magritte/build/self-magritte $DEST/self-magritte/bin/self-magritte
 cd $DEST
 docker build -t "chrisbattarbee/self-magritte:$VERSION" .
 docker tag "chrisbattarbee/self-magritte:$VERSION" "chrisbattarbee/self-magritte:latest"
-docker push chrisbattarbee/self-server:latest
+docker push chrisbattarbee/self-magritte:latest
