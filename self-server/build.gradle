@@ -21,9 +21,9 @@ dependencies {
     testImplementation 'com.palantir.conjure.java.api:test-utils'
 }
 
-mainClassName = 'com.chrisbattarbee.self.RecipeBookApplication'
+mainClassName = 'com.chrisbattarbee.self.SelfServer'
 
 run {
-    args 'server', 'var/conf/recipes.yml'
+    args 'server', 'var/conf/selfserver.yml'
 }
 

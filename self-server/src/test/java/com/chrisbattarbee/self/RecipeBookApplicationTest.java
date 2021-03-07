@@ -48,8 +48,8 @@ public class RecipeBookApplicationTest {
     private static final String TRUSTSTORE_PATH = "src/test/resources/trustStore.jks";
 
     @ClassRule
-    public static final DropwizardAppRule<RecipeBookConfiguration> RULE = new DropwizardAppRule<>(
-            RecipeBookApplication.class, Resources.getResource("test.yml").getPath());
+    public static final DropwizardAppRule<SelfServerConfiguration> RULE = new DropwizardAppRule<>(
+            SelfServer.class, Resources.getResource("test.yml").getPath());
 
     private static RecipeBookService client;
 

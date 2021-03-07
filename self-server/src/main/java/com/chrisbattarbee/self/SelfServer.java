@@ -16,7 +16,7 @@
 
 package com.chrisbattarbee.self;
 
-import com.chrisbattarbee.self.resources.RecipeBookResource;
+import com.chrisbattarbee.self.resources.CalorieServiceResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.palantir.conjure.java.serialization.ObjectMappers;
 import com.palantir.conjure.java.server.jersey.ConjureJerseyFeature;
@@ -26,14 +26,14 @@ import io.dropwizard.jackson.DiscoverableSubtypeResolver;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public final class RecipeBookApplication extends Application<RecipeBookConfiguration> {
+public final class SelfServer extends Application<SelfServerConfiguration> {
 
     public static void main(String[] args) throws Exception {
-        new RecipeBookApplication().run(args);
+        new SelfServer().run(args);
     }
 
     @Override
-    public void initialize(Bootstrap<RecipeBookConfiguration> bootstrap) {
+    public void initialize(Bootstrap<SelfServerConfiguration> bootstrap) {
         ObjectMapper conjureObjectMapper = ObjectMappers.newServerObjectMapper()
                 // needs discoverable subtype resolver for DW polymorphic configuration mechanism
                 .setSubtypeResolver(new DiscoverableSubtypeResolver());
@@ -42,8 +42,8 @@ public final class RecipeBookApplication extends Application<RecipeBookConfigura
     }
 
     @Override
-    public void run(RecipeBookConfiguration configuration, Environment environment) {
-        RecipeBookResource resource = new RecipeBookResource(configuration.getRecipes());
+    public void run(SelfServerConfiguration _configuration, Environment environment) {
+        CalorieServiceResource resource = new CalorieServiceResource();
         environment.jersey().register(resource);
 
         // must register ConjureJerseyFeature to map conjure error types.
