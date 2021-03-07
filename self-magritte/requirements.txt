@@ -1,3 +1,4 @@
 requests
 myfitnesspal
 conjure-python-client
+schedule
