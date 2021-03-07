@@ -2,77 +2,60 @@ types:
   definitions:
     default-package: com.chrisbattarbee.self.calories
     objects:
-      Temperature:
+
+      FoodEntry:
         fields:
-          degree: double
-          unit: TemperatureUnit
+          name: string
+          calories: double
+          carbohydrates: double
+          fat: double
+          protein: double
+          sodium: double
+          sugar: double
+          quantity: double
+          unit: string
 
-      Ingredient:
-        alias: string
-
-      RecipeName:
-        alias: string
-
-      BakeStep:
+      Meal:
         fields:
-          temperature: Temperature
-          durationInSeconds: integer
+          entries: list<FoodEntry>
+          name: string
 
-      RecipeStep:
-        union:
-          mix: set<Ingredient>
-          chop: Ingredient
-          bake: BakeStep
-
-      Recipe:
+      MacroGoals:
         fields:
-          name: RecipeName
-          steps: list<RecipeStep>
-
-      TemperatureUnit:
-        values:
-          - FAHRENHEIT
-          - CELSIUS
+          calories: double
+          carbohydrates: double
+          fat: double
+          protein: double
+          sodium: double
+          sugar: double
 
     errors:
-      RecipeNotFound:
-        namespace: Recipe
+      MealsNotFound:
+        namespace: Calories
         code: NOT_FOUND
         safe-args:
-          name: RecipeName
+          date: string
 
 services:
   CalorieService:
-    name: Calories
+    name: Calorie Tracking Service
     package: com.chrisbattarbee.self.calories
     base-path: /calories
     docs: |
       API for retrieving and adding calorie information.
 
     endpoints:
-      add:
-        http: POST /
+      updateDailyCalories:
+        http: PUT /calories/{date}
         args:
-          createRecipeRequest:
+          date: string
+          updateDayRequest:
             param-type: body
-            type: Recipe
-
-      getRecipe:
-        http: GET /{name}
+            type: list<Meal>
+      updateDailyMacroGoals:
+        http: PUT /macrogoals/{date}
         args:
-          name: RecipeName
-        returns: Recipe
-        docs: |
-          Retrieves a recipe for the given name.
-
-          @param name
-                 The name of the recipe
-
-      getAllRecipes:
-        http: GET /
-        returns: set<Recipe>
-
-      deleteRecipe:
-        http: DELETE /{name}
-        args:
-          name: RecipeName
+          date: string
+          updateMacroGoalsRequest:
+            param-type: body
+            type: MacroGoals

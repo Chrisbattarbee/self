@@ -1,1 +1,3 @@
 requests
+myfitnesspal
+conjure-python-client
