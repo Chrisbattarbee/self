@@ -1,4 +1,4 @@
-FROM java:8u111-jdk-alpine
+FROM python:3.9-buster
 
 RUN set -eux; \
     mkdir -p /opt/self/services;

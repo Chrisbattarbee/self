@@ -12,5 +12,6 @@ def main():
     job = calories.run_job
     eval(config['calories']['when'])
 
+    schedule.run_all()
     while True:
         schedule.run_pending()
