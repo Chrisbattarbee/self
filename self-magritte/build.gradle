@@ -21,14 +21,6 @@ tasks.register('self_magritte_build') {
                 executable = "${python_path}"
                 args = ['-m', 'pip', 'install', 'pex']
             }
-            def result2 = exec{
-                executable = "${python_path}"
-                args = ['-m', 'pip', 'install', "${projectDir}/../self-api/self-api-python/python"]
-            }
-            def result3 = exec{
-                executable = "${python_path}"
-                args = ['setup.py', 'install']
-            }
             def result4 = exec {
                 executable = "${python_path}"
                 args = ['-m', 'pex', '.', '-r', 'requirements.txt', '-e', 'self_magritte:main', '-o', 'build/self-magritte']
