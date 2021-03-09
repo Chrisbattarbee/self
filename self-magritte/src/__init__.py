@@ -14,4 +14,5 @@ def main():
 
     schedule.run_all()
     while True:
+        time.sleep(10)
         schedule.run_pending()
