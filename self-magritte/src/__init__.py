@@ -4,6 +4,7 @@ import schedule
 import time
 import sys
 
+
 def main():
     config = {}
     with open(sys.argv[1]) as json_config:
@@ -16,3 +17,6 @@ def main():
     while True:
         time.sleep(10)
         schedule.run_pending()
+
+
+main()

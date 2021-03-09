@@ -49,7 +49,7 @@ def convert_mfp_day_logs_to_self_api_format(date, day_logs):
             food_entries.append(
                 FoodEntry(
                     name=food_entry.name,
-                    quantity=food_entry.quantity,
+                    quantity=float(food_entry.quantity),
                     unit=food_entry.unit,
                     calories=food_entry.totals['calories'],
                     carbohydrates=food_entry.totals['carbohydrates'],
