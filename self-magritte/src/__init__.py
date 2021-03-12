@@ -1,4 +1,4 @@
-import self_magritte.calories
+from .calories import run_job as calories_run_job
 import json
 import schedule
 import time
@@ -10,7 +10,7 @@ def main():
     with open(sys.argv[1]) as json_config:
         config = json.load(json_config)
 
-    job = calories.run_job
+    job = calories_run_job
     eval(config['calories']['when'])
 
     schedule.run_all()
