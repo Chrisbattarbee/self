@@ -7,6 +7,6 @@ class IngestInterface():
         """Ingest the data for a time period."""
         pass
 
-    def run_historical_job(self):
+    def run_historical_job(self, from_date):
         """Should gather all historical data for the ingested service."""
         pass
