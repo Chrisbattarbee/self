@@ -43,9 +43,7 @@ public final class CalorieServiceResource extends SelfResource implements Calori
         dyanamoManager.createDynamoTableIfItDoesntExist(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY, PROVISIONED_THROUGHPUT);
     }
 
-    public CalorieServiceResource() {
-        super();
-    }
+    public CalorieServiceResource() {}
 
     @Override
     public void updateDailyCalories(MealsForDay updateDayRequest) {
