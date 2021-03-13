@@ -26,7 +26,7 @@ public final class DynamoManager {
     private final AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.defaultClient();
     private final DynamoDB documentDynamoClient = new DynamoDB(dynamoClient);
 
-    private DynamoManager() { }
+    private DynamoManager() {}
 
     public static DynamoManager getInstance() {
         if (instance == null) {
@@ -44,7 +44,9 @@ public final class DynamoManager {
             logger.error("Could not encode object {} into json. Error: {}", SafeArg.of("object", object), e);
         }
         table.putItem(jsonDynamoBlob);
-        logger.info("Successfully inserted item {} into dynamodb table {}.", SafeArg.of("item", jsonDynamoBlob),
+        logger.info(
+                "Successfully inserted item {} into dynamodb table {}.",
+                SafeArg.of("item", jsonDynamoBlob),
                 SafeArg.of("table", tableName));
     }
 
@@ -52,14 +54,19 @@ public final class DynamoManager {
         Table table = documentDynamoClient.getTable(tableName);
         Item item = table.getItem(new PrimaryKey(keyName, key));
         if (item == null) {
-            logger.error("Could not find requested object with {} = {} in dynamo.", SafeArg.of("keyName", keyName),
+            logger.error(
+                    "Could not find requested object with {} = {} in dynamo.",
+                    SafeArg.of("keyName", keyName),
                     SafeArg.of("key", key));
         }
         try {
             return objectMapper.readValue(item.toJSON(), objectType);
         } catch (JsonProcessingException e) {
-            logger.error("Could not decode json {} into objectType: {}. Error: {}", SafeArg.of("json", item.toJSON()),
-                    SafeArg.of("objectType", objectType), e);
+            logger.error(
+                    "Could not decode json {} into objectType: {}. Error: {}",
+                    SafeArg.of("json", item.toJSON()),
+                    SafeArg.of("objectType", objectType),
+                    e);
         }
         return null;
     }
@@ -72,8 +79,11 @@ public final class DynamoManager {
                     .withProvisionedThroughput(throughput)
                     .withTableName(tableName);
             dynamoClient.createTable(request);
-            logger.info("Created dynamo table {}, key = {}, througput = {}", SafeArg.of("table", tableName),
-                    SafeArg.of("key", key), SafeArg.of("throughput", throughput));
+            logger.info(
+                    "Created dynamo table {}, key = {}, througput = {}",
+                    SafeArg.of("table", tableName),
+                    SafeArg.of("key", key),
+                    SafeArg.of("throughput", throughput));
         }
     }
 }
