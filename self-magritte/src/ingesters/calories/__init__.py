@@ -10,8 +10,18 @@ import datetime
 class CalorieIngest(IngestInterface):
     def __init__(self, config):
         super().__init__(config)
-        self.should_run_historical_job = config['calories']['should_run_historical_job']
-        self.historical_job_from_date = datetime.date.fromisoformat(config['calories']['historical_job_from_date'])
+        try:
+            self.should_run_historical_job = config['calories']['should_run_historical_job']
+        except:
+            self.should_run_historical_job = False
+            print("Could not find config for should_run_historical_job, setting to default of {}".format(self.should_run_historical_job))
+        try:
+            self.historical_job_from_date = datetime.date.fromisoformat(config['calories']['historical_job_from_date'])
+        except:
+            self.historical_job_from_date = datetime.date.fromisoformat("2015-01-01")
+            print("Could not find config for should_run_historical_job, setting to default of {}".format(self.historical_job_from_date))
+
+        # Without these parameters, we can't do anything so we should just crash out
         self.self_api_client = self.get_self_api_calories_client(config['server_location'])
         self.mfp_client = myfitnesspal.Client(username=config['calories']['mfp_username'], password=config['calories']['mfp_password'])
 
