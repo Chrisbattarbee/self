@@ -4,3 +4,4 @@ conjure-python-client
 schedule
 ../self-api/self-api-python/python
 pex
+boto3
