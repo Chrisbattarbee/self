@@ -8,16 +8,16 @@ import com.palantir.logsafe.SafeArg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SSMManager {
+public final class SimpleSystemsManagementManager {
     private final AWSSimpleSystemsManagement ssmClient = AWSSimpleSystemsManagementClientBuilder.defaultClient();
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private static SSMManager instance;
+    private static SimpleSystemsManagementManager instance;
 
-    private SSMManager() {}
+    private SimpleSystemsManagementManager() {}
 
-    public SSMManager getInstance() {
+    public SimpleSystemsManagementManager getInstance() {
         if (instance == null) {
-            instance = new SSMManager();
+            instance = new SimpleSystemsManagementManager();
         }
         return instance;
     }
