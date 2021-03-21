@@ -1,14 +1,11 @@
 from ingesters.calories import CalorieIngest
-import json
+from utils.ssm_parameter_store import SSMParameterStore
 import schedule
 import time
-import sys
 
 
 def main():
-    config = {}
-    with open(sys.argv[1]) as json_config:
-        config = json.load(json_config)
+    config = SSMParameterStore("/self")
 
     job = CalorieIngest.run_job
     calorie_ingest = CalorieIngest(config)

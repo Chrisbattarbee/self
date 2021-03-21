@@ -8,6 +8,7 @@ dependencies {
     implementation project(':self-api:self-api-jersey')
 
     implementation 'com.amazonaws:aws-java-sdk-dynamodb'
+    implementation 'com.amazonaws:aws-java-sdk-ssm'
     implementation 'com.google.guava:guava'
     implementation 'com.palantir.conjure.java.runtime:conjure-java-jackson-serialization'
     implementation 'com.palantir.conjure.java.runtime:conjure-java-jersey-server'
