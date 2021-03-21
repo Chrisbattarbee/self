@@ -25,7 +25,7 @@ import com.palantir.logsafe.SafeArg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class CalorieServiceResource implements CalorieService {
+public final class CalorieServiceResource extends SelfResource implements CalorieService {
     private static final String CALORIES_DYNAMO_TABLE = "self_api_calories";
     private static final String MACRO_GOALS_DYNAMO_TABLE = "self_api_macro_goals";
     private static final String TABLE_KEY = "date";
@@ -37,14 +37,13 @@ public final class CalorieServiceResource implements CalorieService {
     private final DynamoManager dyanamoManager = DynamoManager.getInstance();
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private void createDynamoTablesIfTheyDontExist() {
+    @Override
+    void createDynamoTablesIfTheyDontExist() {
         dyanamoManager.createDynamoTableIfItDoesntExist(CALORIES_DYNAMO_TABLE, TABLE_KEY, PROVISIONED_THROUGHPUT);
         dyanamoManager.createDynamoTableIfItDoesntExist(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY, PROVISIONED_THROUGHPUT);
     }
 
-    public CalorieServiceResource() {
-        createDynamoTablesIfTheyDontExist();
-    }
+    public CalorieServiceResource() {}
 
     @Override
     public void updateDailyCalories(MealsForDay updateDayRequest) {

@@ -3,6 +3,8 @@
   "calories": {
     "when": "schedule.every(10).seconds.do(job, config=config)",
     "mfp_username": "X",
-    "mfp_password": "Y"
+    "mfp_password": "Y",
+    "should_run_historical_job": false,
+    "historical_job_from_date": "2015-01-01"
   }
 }
