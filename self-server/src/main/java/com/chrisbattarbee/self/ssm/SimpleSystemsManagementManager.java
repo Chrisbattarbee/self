@@ -24,8 +24,7 @@ public final class SimpleSystemsManagementManager {
 
     public String getParameter(String parameterName) {
         logger.info("Attempting to get parameter: {} from SSM.", SafeArg.of("parameterName", parameterName));
-        GetParameterRequest request = new GetParameterRequest()
-                .withName(parameterName);
+        GetParameterRequest request = new GetParameterRequest().withName(parameterName);
         GetParameterResult result = ssmClient.getParameter(request);
         return result.getParameter().getValue();
     }
