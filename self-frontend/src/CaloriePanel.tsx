@@ -26,7 +26,7 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
             }
         });
         let calorieService: CalorieService = new CalorieService(bridge);
-        let currentIsoDate = new Date().toISOString();
+        let currentIsoDate = new Date().toISOString().split('T')[0];
         let mealsForDay = calorieService.getDailyCalories(currentIsoDate);
         let totalCalories = mealsForDay.then(x => x.meals.map(x => x.entries.map(y => (y.calories as number)).reduce((y, z) => y + z, 0)).reduce((x, y) => x + y, 0));
         totalCalories.then(x => this.setState({totalCalories: x}))
@@ -35,7 +35,7 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
     render() {
         return (
             <div>
-                Hello this a panel. You've consumed {this.state.totalCalories} calories today.
+                Hello this the calorie panel. You've consumed {this.state.totalCalories} calories today.
             </div>
         )
     }
