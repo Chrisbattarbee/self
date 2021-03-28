@@ -10,5 +10,5 @@ gulp.task('default', () => {
             compress: false,
             ignore: ['png']
         }))
-        .pipe(gulp.dest('./build'))
+        .pipe(gulp.dest('./build/gulp'))
 });
