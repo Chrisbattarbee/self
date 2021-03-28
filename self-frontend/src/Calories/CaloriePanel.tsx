@@ -6,6 +6,7 @@ import {HistoricalMacros} from "./HistoricalMacros";
 import * as _ from "lodash";
 import {CurrentDay} from "./CurrentDay";
 import {Container, Divider} from "semantic-ui-react";
+import {IMacroGoals} from "conjure-self-api/self-calories/macroGoals";
 
 interface CaloriePanelProps {
 
@@ -14,7 +15,8 @@ interface CaloriePanelProps {
 interface CaloriePanelState {
     totalCalories: number,
     calorieService: CalorieService,
-    lastWeeksMeals: IMealsForDay[]
+    lastWeeksMeals: IMealsForDay[],
+    lastWeeksGoals: IMacroGoals[],
 }
 
 
@@ -34,6 +36,7 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
             totalCalories: 0,
             calorieService: calorieService,
             lastWeeksMeals: [],
+            lastWeeksGoals: [],
         };
     }
 
@@ -41,23 +44,31 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
         return new Date(Date.now() - numDays * 24 * 60 * 60 * 1000);
     }
 
-    setLastWeeksMeals() {
+    setLastWeeksMealsAndGoals() {
         _.range(7).forEach(x => {
             let date = this.dateXDaysAgo(x);
-            let mealsForDate = this.state.calorieService.getDailyCalories(date.toISOString().split('T')[0]);
+            let dateString = date.toISOString().split('T')[0];
+            let mealsForDate = this.state.calorieService.getDailyCalories(dateString);
             mealsForDate.then(meals => {
                 this.setState(state => {
                     return {lastWeeksMeals: state.lastWeeksMeals.concat([meals])}
                 });
             })
+            let goalsForDate = this.state.calorieService.getDailyMacroGoals(dateString);
+            goalsForDate.then(goals => {
+                this.setState(state => {
+                    return {lastWeeksGoals: state.lastWeeksGoals.concat([goals])}
+                });
+            });
         });
     }
 
     componentDidMount() {
-        this.setLastWeeksMeals();
+        this.setLastWeeksMealsAndGoals();
     }
 
     render() {
+        return (<div></div>);
         return (
             <Container style={{width: 600}}>
                 <Container>
@@ -67,7 +78,16 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
                 </Container>
                 <Divider/>
                 <CurrentDay
-                    currentDayMeals={this.state.lastWeeksMeals.filter(x => x.date === new Date().toISOString().split('T')[0])[0]}
+                    currentDayMeals={
+                        this.state.lastWeeksMeals.length > 0 ?
+                            this.state.lastWeeksMeals.filter(x => x.date === new Date().toISOString().split('T')[0])[0] :
+                            null
+                    }
+                    currentDayGoals={
+                        this.state.lastWeeksGoals.length > 0 ?
+                            this.state.lastWeeksGoals.filter(x => x.date === new Date().toISOString().split('T')[0])[0] :
+                            null
+                    }
                 />
             </Container>
         )

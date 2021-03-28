@@ -1,9 +1,11 @@
 import React from "react";
 import {IMealsForDay} from "conjure-self-api/self-calories/mealsForDay";
 import {IFoodEntry} from "conjure-self-api/self-calories/foodEntry";
+import {IMacroGoals} from "conjure-self-api/self-calories/macroGoals";
 
 interface CurrentDayProps {
-    currentDayMeals: IMealsForDay
+    currentDayMeals: IMealsForDay | null,
+    currentDayGoals: IMacroGoals | null
 }
 
 interface CurrentDayState {
@@ -12,6 +14,7 @@ interface CurrentDayState {
 
 class CurrentDay extends React.Component<CurrentDayProps, CurrentDayState> {
     totalOfX(X: keyof IFoodEntry): number {
+        // @ts-ignore
         return this.props.currentDayMeals.meals
             .map(x => x.entries
                 .map(x => x[X] as number)
@@ -36,7 +39,7 @@ class CurrentDay extends React.Component<CurrentDayProps, CurrentDayState> {
     }
 
     render() {
-        if (this.props.currentDayMeals == null) {
+        if (this.props.currentDayMeals == null || this.props.currentDayGoals == null) {
             return (<div/>);
         }
         let calories = this.totalCalories();
