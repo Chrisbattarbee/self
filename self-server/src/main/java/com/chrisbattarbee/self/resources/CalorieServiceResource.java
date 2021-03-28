@@ -37,9 +37,10 @@ public final class CalorieServiceResource extends SelfResource implements Calori
 
     @Override
     void createDynamoTablesIfTheyDontExist() {
-        super.dynamoManager.createDynamoTableIfItDoesntExist(CALORIES_DYNAMO_TABLE, TABLE_KEY, PROVISIONED_THROUGHPUT);
-        super.dynamoManager.createDynamoTableIfItDoesntExist(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY,
-                PROVISIONED_THROUGHPUT);
+        super.getDynamoManager()
+                .createDynamoTableIfItDoesntExist(CALORIES_DYNAMO_TABLE, TABLE_KEY, PROVISIONED_THROUGHPUT);
+        super.getDynamoManager()
+                .createDynamoTableIfItDoesntExist(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY, PROVISIONED_THROUGHPUT);
     }
 
     public CalorieServiceResource() {}
@@ -47,25 +48,26 @@ public final class CalorieServiceResource extends SelfResource implements Calori
     @Override
     public void updateDailyCalories(MealsForDay updateDayRequest) {
         logger.info("Received request to update calories on {}", SafeArg.of("date", updateDayRequest.getDate()));
-        super.dynamoManager.putObjectIntoDynamo(CALORIES_DYNAMO_TABLE, updateDayRequest);
+        super.getDynamoManager().putObjectIntoDynamo(CALORIES_DYNAMO_TABLE, updateDayRequest);
     }
 
     @Override
     public MealsForDay getDailyCalories(String date) {
         logger.info("Received request to get calories on {}", SafeArg.of("date", date));
-        return super.dynamoManager.getObjectFromDynamo(CALORIES_DYNAMO_TABLE, TABLE_KEY, date, MealsForDay.class);
+        return super.getDynamoManager().getObjectFromDynamo(CALORIES_DYNAMO_TABLE, TABLE_KEY, date, MealsForDay.class);
     }
 
     @Override
     public void updateDailyMacroGoals(MacroGoals updateMacroGoalsRequest) {
         logger.info(
                 "Received request to update macro goals on {}", SafeArg.of("date", updateMacroGoalsRequest.getDate()));
-        super.dynamoManager.putObjectIntoDynamo(MACRO_GOALS_DYNAMO_TABLE, updateMacroGoalsRequest);
+        super.getDynamoManager().putObjectIntoDynamo(MACRO_GOALS_DYNAMO_TABLE, updateMacroGoalsRequest);
     }
 
     @Override
     public MacroGoals getDailyMacroGoals(String date) {
         logger.info("Received request to get macro goals on {}", SafeArg.of("date", date));
-        return super.dynamoManager.getObjectFromDynamo(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY, date, MacroGoals.class);
+        return super.getDynamoManager()
+                .getObjectFromDynamo(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY, date, MacroGoals.class);
     }
 }
