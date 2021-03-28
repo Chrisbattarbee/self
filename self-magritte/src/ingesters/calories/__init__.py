@@ -1,7 +1,7 @@
 import time
 
 import myfitnesspal
-from ingesters.ingest import IngestInterface
+from ..ingest import IngestInterface
 from self_api.self_calories import CalorieService, FoodEntry, Meal, MacroGoals, MealsForDay
 from conjure_python_client import RequestsClient, ServiceConfiguration
 import datetime

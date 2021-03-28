@@ -1,5 +1,5 @@
-from ingesters.calories import CalorieIngest
-from utils.ssm_parameter_store import SSMParameterStore
+from .ingesters.calories import CalorieIngest
+from .utils.ssm_parameter_store import SSMParameterStore
 import schedule
 import time
 
