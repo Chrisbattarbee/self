@@ -49,10 +49,10 @@ class CurrentDay extends React.Component<CurrentDayProps, CurrentDayState> {
         return (
             <div style={{textAlign: "center"}}>
                 <h1>Today's Stats</h1>
-                <p>Total calories (kCal): <b>{calories}</b></p>
-                <p>Total protein (g): <b>{protein}</b></p>
-                <p>Total fat (g): <b>{fat}</b></p>
-                <p>Total carbs (g): <b>{carbs}</b></p>
+                <p>Total calories (kCal): <b>{calories}</b> / {this.props.currentDayGoals.calories}</p>
+                <p>Total protein (g): <b>{protein}</b> / {this.props.currentDayGoals.protein}</p>
+                <p>Total fat (g): <b>{fat}</b> / {this.props.currentDayGoals.fat}</p>
+                <p>Total carbs (g): <b>{carbs}</b> / {this.props.currentDayGoals.carbohydrates}</p>
             </div>
         );
     }
