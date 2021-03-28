@@ -67,6 +67,6 @@ public final class CalorieServiceResource extends SelfResource implements Calori
     @Override
     public MacroGoals getDailyMacroGoals(String date) {
         logger.info("Received request to get macro goals on {}", SafeArg.of("date", date));
-        return dyanamoManager.getObjectFromDynamo(CALORIES_DYNAMO_TABLE, TABLE_KEY, date, MacroGoals.class);
+        return dyanamoManager.getObjectFromDynamo(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY, date, MacroGoals.class);
     }
 }
