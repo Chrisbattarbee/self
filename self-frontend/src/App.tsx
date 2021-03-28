@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {CaloriePanel} from "./CaloriePanel";
+import {CaloriePanel} from "./Calories/CaloriePanel";
 
 interface AppProps {
 
@@ -14,9 +14,7 @@ class App extends React.Component<AppProps, AppState> {
 
     render() {
         return (
-            <div>
-                <CaloriePanel />
-            </div>
+            <CaloriePanel/>
         );
     }
 }
