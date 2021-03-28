@@ -9,22 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: "Cd to frontend directory"
-        run: cd self-frontend
-      - name: "Install npm"
-        run: sudo apt install npm
-      - name: "Install yarn"
-        run: npm install --global yarn
       - name: "Install dependencies"
-        run: yarn install
+        run: ./gradlew yarn_install
       - name: "Build react app"
-        run: yarn build
+        run: ./gradlew yarn_build
       - name: "Package with gulp"
-        run: yarn gulp
+        run: ./gradlew yarn_gulp
       - name: "Upload to S3 bucket"
         uses: shallwefootball/s3-upload-action@master
         with:
           aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
           aws_bucket: ${{ secrets.AWS_SELF_DASHBOARD_BUCKET }}
-          source_dir: './build/index.html'
+          source_dir: './self-frontend/build/index.html'
