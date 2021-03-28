@@ -20,7 +20,6 @@ import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.chrisbattarbee.self.calories.CalorieService;
 import com.chrisbattarbee.self.calories.MacroGoals;
 import com.chrisbattarbee.self.calories.MealsForDay;
-import com.chrisbattarbee.self.dynamo.DynamoManager;
 import com.palantir.logsafe.SafeArg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +33,13 @@ public final class CalorieServiceResource extends SelfResource implements Calori
     private static final ProvisionedThroughput PROVISIONED_THROUGHPUT =
             new ProvisionedThroughput(READ_THROUGHPUT, WRITE_THROUGHPUT);
 
-    private final DynamoManager dyanamoManager = DynamoManager.getInstance();
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     void createDynamoTablesIfTheyDontExist() {
-        dyanamoManager.createDynamoTableIfItDoesntExist(CALORIES_DYNAMO_TABLE, TABLE_KEY, PROVISIONED_THROUGHPUT);
-        dyanamoManager.createDynamoTableIfItDoesntExist(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY, PROVISIONED_THROUGHPUT);
+        super.dynamoManager.createDynamoTableIfItDoesntExist(CALORIES_DYNAMO_TABLE, TABLE_KEY, PROVISIONED_THROUGHPUT);
+        super.dynamoManager.createDynamoTableIfItDoesntExist(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY,
+                PROVISIONED_THROUGHPUT);
     }
 
     public CalorieServiceResource() {}
@@ -48,25 +47,25 @@ public final class CalorieServiceResource extends SelfResource implements Calori
     @Override
     public void updateDailyCalories(MealsForDay updateDayRequest) {
         logger.info("Received request to update calories on {}", SafeArg.of("date", updateDayRequest.getDate()));
-        dyanamoManager.putObjectIntoDynamo(CALORIES_DYNAMO_TABLE, updateDayRequest);
+        super.dynamoManager.putObjectIntoDynamo(CALORIES_DYNAMO_TABLE, updateDayRequest);
     }
 
     @Override
     public MealsForDay getDailyCalories(String date) {
         logger.info("Received request to get calories on {}", SafeArg.of("date", date));
-        return dyanamoManager.getObjectFromDynamo(CALORIES_DYNAMO_TABLE, TABLE_KEY, date, MealsForDay.class);
+        return super.dynamoManager.getObjectFromDynamo(CALORIES_DYNAMO_TABLE, TABLE_KEY, date, MealsForDay.class);
     }
 
     @Override
     public void updateDailyMacroGoals(MacroGoals updateMacroGoalsRequest) {
         logger.info(
                 "Received request to update macro goals on {}", SafeArg.of("date", updateMacroGoalsRequest.getDate()));
-        dyanamoManager.putObjectIntoDynamo(MACRO_GOALS_DYNAMO_TABLE, updateMacroGoalsRequest);
+        super.dynamoManager.putObjectIntoDynamo(MACRO_GOALS_DYNAMO_TABLE, updateMacroGoalsRequest);
     }
 
     @Override
     public MacroGoals getDailyMacroGoals(String date) {
         logger.info("Received request to get macro goals on {}", SafeArg.of("date", date));
-        return dyanamoManager.getObjectFromDynamo(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY, date, MacroGoals.class);
+        return super.dynamoManager.getObjectFromDynamo(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY, date, MacroGoals.class);
     }
 }
