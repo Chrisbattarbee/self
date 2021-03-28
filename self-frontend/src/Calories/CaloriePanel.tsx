@@ -5,6 +5,7 @@ import {IMealsForDay} from "conjure-self-api/self-calories/mealsForDay";
 import {HistoricalMacros} from "./HistoricalMacros";
 import * as _ from "lodash";
 import {CurrentDay} from "./CurrentDay";
+import {Container, Divider} from "semantic-ui-react";
 
 interface CaloriePanelProps {
 
@@ -58,14 +59,17 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
 
     render() {
         return (
-            <div style={{height: 800}}>
-                <HistoricalMacros
-                    lastWeeksMeals={this.state.lastWeeksMeals}
-                />
+            <Container style={{width: 600}}>
+                <Container>
+                    <HistoricalMacros
+                        lastWeeksMeals={this.state.lastWeeksMeals}
+                    />
+                </Container>
+                <Divider/>
                 <CurrentDay
                     currentDayMeals={this.state.lastWeeksMeals.filter(x => x.date === new Date().toISOString().split('T')[0])[0]}
                 />
-            </div>
+            </Container>
         )
     }
 }

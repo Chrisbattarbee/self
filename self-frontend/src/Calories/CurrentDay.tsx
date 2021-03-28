@@ -44,7 +44,7 @@ class CurrentDay extends React.Component<CurrentDayProps, CurrentDayState> {
         let fat = this.totalGramsOfFat();
         let carbs = this.totalGramsOfCarbs();
         return (
-            <div>
+            <div style={{textAlign: "center"}}>
                 <h1>Today's Stats</h1>
                 <p>Total calories (kCal): <b>{calories}</b></p>
                 <p>Total protein (g): <b>{protein}</b></p>
