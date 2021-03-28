@@ -43,7 +43,7 @@ class HistoricalMacros extends React.Component<HistoricalMacrosProps, Historical
         let lastWeeksMacrosPlotData = this.generateLastWeeksPlottableMacrosData();
         return (
             <div style={{height: 300}}>
-                <h2>Historical Macros</h2>
+                <h2 style={{textAlign: "center"}}>Historical Macros</h2>
                 <ResponsiveBar
                     data={lastWeeksMacrosPlotData}
                     keys={['proteinCalories', 'carbsCalories', 'fatCalories']}
