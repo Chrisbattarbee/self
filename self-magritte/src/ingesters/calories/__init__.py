@@ -11,7 +11,7 @@ class CalorieIngest(IngestInterface):
     def __init__(self, config):
         super().__init__(config)
         try:
-            self.should_run_historical_job = config['calories']['should_run_historical_job']
+            self.should_run_historical_job = config['calories']['should_run_historical_job'] == "true"
         except:
             self.should_run_historical_job = False
             print("Could not find config for should_run_historical_job, setting to default of {}".format(self.should_run_historical_job))
