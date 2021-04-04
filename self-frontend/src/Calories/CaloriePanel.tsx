@@ -68,7 +68,6 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
     }
 
     render() {
-        // return (<div></div>);
         return (
             <Container style={{width: 600}}>
                 <Container>
