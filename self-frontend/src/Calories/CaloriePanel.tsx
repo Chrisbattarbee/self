@@ -17,6 +17,7 @@ interface CaloriePanelState {
     calorieService: CalorieService,
     lastWeeksMeals: IMealsForDay[],
     lastWeeksGoals: IMacroGoals[],
+    interval: ReturnType<typeof setTimeout> | undefined;
 }
 
 
@@ -37,6 +38,7 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
             calorieService: calorieService,
             lastWeeksMeals: [],
             lastWeeksGoals: [],
+            interval: undefined
         };
     }
 
@@ -65,6 +67,18 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
 
     componentDidMount() {
         this.setLastWeeksMealsAndGoals();
+        let interval = setInterval(() => this.setLastWeeksMealsAndGoals(), 10 * 60 * 1000, this);
+        this.setState(_ => {
+            return {
+                interval: interval,
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.state.interval != undefined) {
+            clearInterval(this.state.interval);
+        }
     }
 
     render() {
