@@ -16,6 +16,7 @@ jobs:
       - uses: actions/checkout@master
       - name: "Build conjure definitions"
         run: ./gradlew compileConjure
+
       - name: "Install dependencies"
         run: ./gradlew yarn_install
       - name: "Build react app"
