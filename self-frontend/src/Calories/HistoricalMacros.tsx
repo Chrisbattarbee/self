@@ -1,6 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {IMealsForDay} from "conjure-self-api/self-calories/mealsForDay";
 import {ResponsiveBar} from "@nivo/bar";
+import {line} from "d3-shape";
+import * as _ from "lodash";
+import {IMacroGoals} from "conjure-self-api/self-calories/macroGoals";
 
 const PROTEIN_CALORIES_PER_GRAM = 4;
 const CARBS_CALORIES_PER_GRAM = 4;
@@ -10,11 +13,13 @@ interface PlottableMacrosData {
     date: string,
     proteinCalories: number,
     carbsCalories: number,
-    fatCalories: number
+    fatCalories: number,
+    goalCalories: number
 }
 
 interface HistoricalMacrosProps {
-    lastWeeksMeals: IMealsForDay[]
+    lastWeeksMeals: IMealsForDay[],
+    lastWeeksGoals: IMacroGoals[],
 }
 
 interface HistoricalMacrosState {
@@ -29,6 +34,7 @@ class HistoricalMacros extends React.Component<HistoricalMacrosProps, Historical
                 proteinCalories: x.meals.map(y => y.entries.map(z => (z.protein as number) * PROTEIN_CALORIES_PER_GRAM).reduce((x, y) => x + y, 0)).reduce((x, y) => x + y, 0),
                 carbsCalories: x.meals.map(y => y.entries.map(z => (z.carbohydrates as number) * CARBS_CALORIES_PER_GRAM).reduce((x, y) => x + y, 0)).reduce((x, y) => x + y, 0),
                 fatCalories: x.meals.map(y => y.entries.map(z => (z.fat as number) * FAT_CALORIES_PER_GRAM).reduce((x, y) => x + y, 0)).reduce((x, y) => x + y, 0),
+                goalCalories: this.props.lastWeeksGoals.filter(y => y.date == x.date)[0].calories as number
             }
         }).sort((x, y) => (new Date(x.date).getTime()) - (new Date(y.date).getTime()))
             .map(x => {
@@ -40,7 +46,29 @@ class HistoricalMacros extends React.Component<HistoricalMacrosProps, Historical
     }
 
     render() {
+        if (!_.isEqual(this.props.lastWeeksGoals.map(x => x.date).sort(), this.props.lastWeeksMeals.map(x => x.date).sort())) {
+            return <div/>;
+        }
         let lastWeeksMacrosPlotData = this.generateLastWeeksPlottableMacrosData();
+        // @ts-ignore
+        const LineLayer = ({ bars, xScale, yScale }) => {
+            const lineGenerator = line<PlottableMacrosData>()
+                .x((d, index, data) => xScale(index))
+                .y((d, index, data) => yScale(d.goalCalories));
+
+            // @ts-ignore
+            return (
+                <Fragment>
+                    <path
+                        d={lineGenerator(bars) as string}
+                        fill="none"
+                        stroke={"rgba(200, 30, 15, 1)"}
+                        style={{ pointerEvents: "none" }}
+                    />
+                </Fragment>
+            );
+        };
+
         return (
             <div style={{height: 300}}>
                 <h2 style={{textAlign: "center"}}>Historical Macros</h2>
@@ -122,6 +150,7 @@ class HistoricalMacros extends React.Component<HistoricalMacrosProps, Historical
                     animate={false}
                     motionStiffness={90}
                     motionDamping={15}
+                    layers={["grid", "axes", "bars", "markers", "legends", LineLayer]}
                 />
             </div>
         )
