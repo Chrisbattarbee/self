@@ -76,7 +76,7 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
     }
 
     componentWillUnmount() {
-        if (this.state.interval != undefined) {
+        if (this.state.interval !== undefined) {
             clearInterval(this.state.interval);
         }
     }

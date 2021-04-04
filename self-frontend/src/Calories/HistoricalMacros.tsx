@@ -34,7 +34,7 @@ class HistoricalMacros extends React.Component<HistoricalMacrosProps, Historical
                 proteinCalories: x.meals.map(y => y.entries.map(z => (z.protein as number) * PROTEIN_CALORIES_PER_GRAM).reduce((x, y) => x + y, 0)).reduce((x, y) => x + y, 0),
                 carbsCalories: x.meals.map(y => y.entries.map(z => (z.carbohydrates as number) * CARBS_CALORIES_PER_GRAM).reduce((x, y) => x + y, 0)).reduce((x, y) => x + y, 0),
                 fatCalories: x.meals.map(y => y.entries.map(z => (z.fat as number) * FAT_CALORIES_PER_GRAM).reduce((x, y) => x + y, 0)).reduce((x, y) => x + y, 0),
-                goalCalories: this.props.lastWeeksGoals.filter(y => y.date == x.date)[0].calories as number
+                goalCalories: this.props.lastWeeksGoals.filter(y => y.date === x.date)[0].calories as number
             }
         }).sort((x, y) => (new Date(x.date).getTime()) - (new Date(y.date).getTime()))
             .map(x => {
