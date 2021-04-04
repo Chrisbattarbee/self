@@ -94,12 +94,12 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
                 <CurrentDay
                     currentDayMeals={
                         this.state.lastWeeksMeals.length > 0 ?
-                            this.state.lastWeeksMeals.filter(x => x.date === new Date(2021, 3, 3).toISOString().split('T')[0])[0] :
+                            this.state.lastWeeksMeals.filter(x => x.date === new Date().toISOString().split('T')[0])[0] :
                             null
                     }
                     currentDayGoals={
                         this.state.lastWeeksGoals.length > 0 ?
-                            this.state.lastWeeksGoals.filter(x => x.date === new Date(2021, 3, 3).toISOString().split('T')[0])[0] :
+                            this.state.lastWeeksGoals.filter(x => x.date === new Date().toISOString().split('T')[0])[0] :
                             null
                     }
                 />
