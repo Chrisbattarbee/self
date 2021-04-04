@@ -16,7 +16,10 @@ jobs:
       - uses: actions/checkout@master
       - name: "Build conjure definitions"
         run: ./gradlew compileConjure
-
+      - name: "Install dependencies for typescript conjure client library."
+        run: yarn --cwd self-api/self-api-typescript/src install
+      - name: "Compile typescript conjure client library to javascript."
+        run: yarn --cwd self-api/self-api-typescript/src build
       - name: "Install dependencies"
         run: ./gradlew yarn_install
       - name: "Build react app"
