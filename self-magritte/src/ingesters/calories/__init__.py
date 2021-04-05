@@ -14,12 +14,12 @@ class CalorieIngest(IngestInterface):
             self.should_run_historical_job = config['calories']['should_run_historical_job'] == "true"
         except:
             self.should_run_historical_job = False
-            print("Could not find config for should_run_historical_job, setting to default of {}".format(self.should_run_historical_job))
+            print("Calories: Could not find config for should_run_historical_job, setting to default of {}".format(self.should_run_historical_job))
         try:
             self.historical_job_from_date = datetime.date.fromisoformat(config['calories']['historical_job_from_date'])
         except:
             self.historical_job_from_date = datetime.date.fromisoformat("2015-01-01")
-            print("Could not find config for should_run_historical_job, setting to default of {}".format(self.historical_job_from_date))
+            print("Calories: Could not find config for should_run_historical_job, setting to default of {}".format(self.historical_job_from_date))
 
         # Without these parameters, we can't do anything so we should just crash out
         self.self_api_client = self.get_self_api_calories_client(config['server_location'])
