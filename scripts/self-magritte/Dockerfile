@@ -3,7 +3,7 @@ FROM python:3.9-buster
 RUN set -eux; \
     mkdir -p /opt/self/services;
 
-RUN sudo apt-get update && sudo apt-get -y install nodejs
+RUN apt-get update && apt-get -y install nodejs
 
 ADD self-magritte/ /opt/self/services/self-magritte
 
