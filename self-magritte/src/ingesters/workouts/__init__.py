@@ -91,7 +91,6 @@ class WorkoutIngest(IngestInterface):
         to the api.
         :param date: The date to get the information for
         """
-        date = "2021-03-31" # We know we have data for this date
         result = subprocess.run(['node', 'src/ingesters/workouts/node/index.js', self.jefit_username, date], stdout=subprocess.PIPE)
         workout_logs_for_day_dict = json.loads(result.stdout)
         self_api_workout = self.convert_jefit_workout_logs_to_self_api_format(date, workout_logs_for_day_dict)
