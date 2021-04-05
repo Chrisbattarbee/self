@@ -11,5 +11,5 @@ RUN chmod +x /opt/self/services/self-magritte
 
 EXPOSE 8001
 
-WORKDIR /opt/self/services/self-magritte/
-ENTRYPOINT ["./bin/self-magritte"]
+WORKDIR /opt/self/services/self-magritte/bin
+ENTRYPOINT ["./self-magritte"]
