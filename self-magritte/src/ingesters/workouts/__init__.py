@@ -65,18 +65,18 @@ class WorkoutIngest(IngestInterface):
         return Workout(
             date=date,
             exercises=exercises,
-            rest_timer=exercise_log.get("restTimer", 0),
-            session_length=exercise_log.get("sessionLength", 0),
-            actual_workout_length=exercise_log.get("actualWorkoutLength", 0),
-            wasted_time=exercise_log.get("wastedTime", 0),
-            total_weight_lifted=exercise_log.get("weightLifted", 0)
+            rest_timer=jefit_logs.get("restTimer", 0),
+            session_length=jefit_logs.get("sessionLength", 0),
+            actual_workout_length=jefit_logs.get("actualWorkout", 0),
+            wasted_time=jefit_logs.get("wastedTime", 0),
+            total_weight_lifted=jefit_logs.get("weightLifted", 0)
         )
 
-    def run_historical_job(self, from_date):
+    def run_historical_job(self):
         date_to_run = self.historical_job_from_date
         while date_to_run != self.current_iso_date():
             try:
-                self.run_job_for_date(date_to_run)
+                self.run_job_for_date(date_to_run.isoformat())
                 date_to_run += datetime.timedelta(days=1)
                 time.sleep(1)
             except Exception as e:
@@ -95,7 +95,7 @@ class WorkoutIngest(IngestInterface):
         workout_logs_for_day_dict = json.loads(result.stdout)
         self_api_workout = self.convert_jefit_workout_logs_to_self_api_format(date, workout_logs_for_day_dict)
         self.self_api_client.update_daily_workout(self_api_workout)
-        print("Updated calories for date {} with value {}.".format(date, self_api_workout))
+        print("Updated workout for date {} with value {}.".format(date, self_api_workout))
 
     @staticmethod
     def get_self_api_workouts_client(server_location):
