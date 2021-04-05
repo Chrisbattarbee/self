@@ -1,5 +1,4 @@
 const jefit = require('./jefit_api');
-const util = require('util');
 
 const args = process.argv.slice(2);
 

@@ -2,6 +2,11 @@
   "name": "jefit_ingester",
   "version": "1.0.0",
   "dependencies": {
-    "webpack": "^5.30.0"
+    "cheerio": "^0.19.0",
+    "request": "^2.55.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.30.0",
+    "webpack-cli": "^4.6.0"
   }
 }
