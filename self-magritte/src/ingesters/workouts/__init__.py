@@ -77,7 +77,7 @@ class WorkoutIngest(IngestInterface):
         date_to_run = self.historical_job_from_date
         while date_to_run != self.current_iso_date():
             try:
-                self.run_job_for_date(date_to_run.isoformat())
+                self.run_job_for_date(date_to_run)
                 date_to_run += datetime.timedelta(days=1)
                 time.sleep(1)
             except Exception as e:
@@ -91,6 +91,7 @@ class WorkoutIngest(IngestInterface):
         to the api.
         :param date: The date to get the information for
         """
+        date = date.isoformat()
         result = subprocess.run(['node', 'src/ingesters/workouts/node/index.js', self.jefit_username, date], stdout=subprocess.PIPE)
         workout_logs_for_day_dict = json.loads(result.stdout)
         self_api_workout = self.convert_jefit_workout_logs_to_self_api_format(date, workout_logs_for_day_dict)
