@@ -35,6 +35,28 @@ types:
           sodium: double
           sugar: double
 
+      Set:
+        fields:
+          index: integer
+          weight: double
+          reps: integer
+
+      Exercise:
+        fields:
+          name: string
+          oneRepMax: double
+          type: string
+          sets: list<Set>
+
+      Workout:
+        fields:
+          exercises: list<Exercise>
+          sessionLength: integer
+          actualWorkoutLength: integer
+          wastedTime: integer
+          restTimer: integer
+          totalWeightLifted: integer
+
     errors:
       Internal:
         namespace: Calories
@@ -46,6 +68,27 @@ types:
           date: string
 
 services:
+  WorkoutService:
+    name: Workout Tracking Service
+    package: com.chrisbattarbee.self.workouts
+    base-path: /workouts
+    docs: |
+      API for retrieving and adding workout information.
+
+    endpoints:
+      updateDailyWorkout:
+        http: PUT /workout
+        args:
+          updateDayRequest:
+            param-type: body
+            type: Workout
+      getDailyWorkout:
+        http: GET /workout/{date}
+        args:
+          date:
+            type: string
+        returns: Workout
+
   CalorieService:
     name: Calorie Tracking Service
     package: com.chrisbattarbee.self.calories
