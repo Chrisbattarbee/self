@@ -31,7 +31,6 @@ class WorkoutIngest(IngestInterface):
     def run_historical_job(self, from_date):
         raise NotImplementedError()
 
-
     @staticmethod
     def get_self_api_workouts_client(server_location):
         config = ServiceConfiguration()
