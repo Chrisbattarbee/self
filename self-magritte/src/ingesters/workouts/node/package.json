@@ -2,6 +2,6 @@
   "name": "jefit_ingester",
   "version": "1.0.0",
   "dependencies": {
-    "jefit": "./jefit_api"
+    "webpack": "^5.30.0"
   }
 }
