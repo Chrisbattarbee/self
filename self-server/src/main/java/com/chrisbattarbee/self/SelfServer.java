@@ -17,6 +17,7 @@
 package com.chrisbattarbee.self;
 
 import com.chrisbattarbee.self.resources.CalorieServiceResource;
+import com.chrisbattarbee.self.resources.WorkoutServiceResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.palantir.conjure.java.serialization.ObjectMappers;
 import com.palantir.conjure.java.server.jersey.ConjureJerseyFeature;
@@ -43,8 +44,11 @@ public final class SelfServer extends Application<SelfServerConfiguration> {
 
     @Override
     public void run(SelfServerConfiguration _configuration, Environment environment) {
-        CalorieServiceResource resource = new CalorieServiceResource();
-        environment.jersey().register(resource);
+        CalorieServiceResource calorieServiceResource = new CalorieServiceResource();
+        environment.jersey().register(calorieServiceResource);
+
+        WorkoutServiceResource workoutServiceResource = new WorkoutServiceResource();
+        environment.jersey().register(workoutServiceResource);
 
         // must register ConjureJerseyFeature to map conjure error types.
         environment.jersey().register(ConjureJerseyFeature.INSTANCE);
