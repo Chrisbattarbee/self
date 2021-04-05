@@ -29,7 +29,7 @@ class WorkoutIngest(IngestInterface):
             print("Workouts: Could not find config for should_run_historical_job, setting to default of {}".format(self.historical_job_from_date))
 
         # Without these parameters, we can't do anything so we should just crash out
-        self.self_api_client = self.get_self_api_workouts_client("http://localhost:8000")
+        self.self_api_client = self.get_self_api_workouts_client(config['server_location'])
         self.jefit_username = config['workouts']['jefit_username']
 
     @staticmethod
