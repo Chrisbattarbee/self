@@ -5,6 +5,9 @@
     "cheerio": "^0.19.0",
     "request": "^2.55.0"
   },
+  "bin": {
+    "jefit_extractor": "src/main.js"
+  },
   "devDependencies": {
     "webpack": "^5.30.0",
     "webpack-cli": "^4.6.0"

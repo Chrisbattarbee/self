@@ -92,7 +92,7 @@ class WorkoutIngest(IngestInterface):
         :param date: The date to get the information for
         """
         date = date.isoformat()
-        result = subprocess.run(['node', 'src/ingesters/workouts/node/index.js', self.jefit_username, date], stdout=subprocess.PIPE)
+        result = subprocess.run(['node', './jefit_extractor.js', self.jefit_username, date], stdout=subprocess.PIPE)
         workout_logs_for_day_dict = json.loads(result.stdout)
         self_api_workout = self.convert_jefit_workout_logs_to_self_api_format(date, workout_logs_for_day_dict)
         self.self_api_client.update_daily_workout(self_api_workout)
