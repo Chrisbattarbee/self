@@ -1,6 +1,6 @@
 import React from "react";
 import {DefaultHttpApiBridge} from "conjure-client";
-import {CalorieService} from "conjure-self-api";
+import {CalorieService} from "conjure-self-api/self-calories";
 import {IMealsForDay} from "conjure-self-api/self-calories/mealsForDay";
 import {HistoricalMacros} from "./HistoricalMacros";
 import * as _ from "lodash";
