@@ -10,6 +10,7 @@ mkdir -p $DEST/self-magritte/bin
 
 cp ./scripts/self-magritte/Dockerfile $DEST/
 cp ./self-magritte/build/self-magritte $DEST/self-magritte/bin/self-magritte
+cp ./self-magritte/build/jefit_extactor.js $DEST/self-magritte/bin/jefit_extractor.js
 
 cd $DEST
 docker build -t "chrisbattarbee/self-magritte:$VERSION" .

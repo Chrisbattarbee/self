@@ -17,6 +17,14 @@ tasks.register('self_magritte_build') {
     dependsOn setupConda
     doLast {
         new ByteArrayOutputStream().withStream { os ->
+            def resultYarnInstall = exec {
+                executable = 'yarn'
+                args = ['--cwd', 'src/ingesters/workouts/node', 'install']
+            }
+            def resultYarnWebpack = exec {
+                executable = 'yarn'
+                args = ['--cwd', 'src/ingesters/workouts/node', 'webpack']
+            }
             def result = exec {
                 executable = "${python_path}"
                 args = ['-m', 'pip', 'install', 'pex']
