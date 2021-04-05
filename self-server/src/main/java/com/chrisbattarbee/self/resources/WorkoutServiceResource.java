@@ -1,13 +1,13 @@
 package com.chrisbattarbee.self.resources;
 
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
-import com.chrisbattarbee.self.calories.Workout;
+import com.chrisbattarbee.self.workouts.Workout;
 import com.chrisbattarbee.self.workouts.WorkoutService;
 import com.palantir.logsafe.SafeArg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WorkoutServiceResource extends SelfResource implements WorkoutService {
+public final class WorkoutServiceResource extends SelfResource implements WorkoutService {
     private static final String WORKOUTS_DYNAMO_TABLE = "self_api_workout";
     private static final String TABLE_KEY = "date";
     private static final long READ_THROUGHPUT = 1L;
