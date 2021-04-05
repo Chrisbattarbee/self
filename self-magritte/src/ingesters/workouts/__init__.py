@@ -8,6 +8,7 @@ import time
 import subprocess
 import json
 
+
 class WorkoutIngest(IngestInterface):
     """
     This ingester calls a node subprocess which in turn prints the result of jefit workouts.
@@ -49,27 +50,27 @@ class WorkoutIngest(IngestInterface):
             for set_log in exercise_log.get("sets", []):
                 sets.append(
                     Set(
-                        index=set_log.get("index", 0),
-                        reps=set_log.get("reps", 0),
-                        weight=set_log.get("weight", 0.0),
+                        index=set_log.get("index", 0) or 0,
+                        reps=set_log.get("reps", 0) or 0,
+                        weight=float(set_log.get("weight", 0.0)) or 0.0,
                     )
                 )
             exercises.append(
                 Exercise(
-                    name=exercise_log.get("name", ""),
-                    one_rep_max=exercise_log.get("oneRepMax", 0.0),
-                    type=exercise_log.get("type", "lift"),
+                    name=exercise_log.get("name", "") or "",
+                    one_rep_max=float(exercise_log.get("oneRepMax", 0.0) or 0.0),
+                    type=exercise_log.get("type", "lift") or "lift",
                     sets=sets
                 )
             )
         return Workout(
             date=date,
             exercises=exercises,
-            rest_timer=jefit_logs.get("restTimer", 0),
-            session_length=jefit_logs.get("sessionLength", 0),
-            actual_workout_length=jefit_logs.get("actualWorkout", 0),
-            wasted_time=jefit_logs.get("wastedTime", 0),
-            total_weight_lifted=jefit_logs.get("weightLifted", 0)
+            rest_timer=jefit_logs.get("restTimer", 0) or 0,
+            session_length=jefit_logs.get("sessionLength", 0) or 0,
+            actual_workout_length=jefit_logs.get("actualWorkout", 0) or 0,
+            wasted_time=jefit_logs.get("wastedTime", 0) or 0,
+            total_weight_lifted=jefit_logs.get("weightLifted", 0) or 0
         )
 
     def run_historical_job(self):
@@ -83,7 +84,6 @@ class WorkoutIngest(IngestInterface):
                 # Could have ratelimit issues, wait a minute then try to continue
                 print(e)
                 time.sleep(60)
-        raise NotImplementedError()
 
     def run_job_for_date(self, date):
         """
