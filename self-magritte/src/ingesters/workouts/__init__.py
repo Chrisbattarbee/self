@@ -1,7 +1,12 @@
 import datetime
 from conjure_python_client import ServiceConfiguration, RequestsClient
-from self_api.self_calories import CalorieService
+from self_api.self_workouts import WorkoutService, Workout, Set, Exercise
+from typing import Dict
+
 from ..ingest import IngestInterface
+import time
+import subprocess
+import json
 
 class WorkoutIngest(IngestInterface):
     """
@@ -17,23 +22,85 @@ class WorkoutIngest(IngestInterface):
             self.should_run_historical_job = False
             print("Workouts: Could not find config for should_run_historical_job, setting to default of {}".format(self.should_run_historical_job))
         try:
-            self.historical_job_from_date = datetime.date.fromisoformat(config['calories']['historical_job_from_date'])
+            self.historical_job_from_date = datetime.date.fromisoformat(config['workouts']['historical_job_from_date'])
         except:
             self.historical_job_from_date = datetime.date.fromisoformat("2015-01-01")
             print("Workouts: Could not find config for should_run_historical_job, setting to default of {}".format(self.historical_job_from_date))
 
         # Without these parameters, we can't do anything so we should just crash out
-        self.self_api_client = self.get_self_api_workouts_client(config['server_location'])
+        self.self_api_client = self.get_self_api_workouts_client("http://localhost:8000")
+        self.jefit_username = config['workouts']['jefit_username']
+
+    @staticmethod
+    def current_iso_date():
+        return datetime.datetime.now().date()
 
     def run_job(self):
-        raise NotImplementedError()
+        if self.should_run_historical_job:
+            self.run_historical_job()
+        self.run_job_for_date(self.current_iso_date())
+
+
+    @staticmethod
+    def convert_jefit_workout_logs_to_self_api_format(date, jefit_logs: Dict):
+        exercises = []
+        for exercise_log in jefit_logs.get("exercises" , []):
+            sets = []
+            for set_log in exercise_log.get("sets", []):
+                sets.append(
+                    Set(
+                        index=set_log.get("index", 0),
+                        reps=set_log.get("reps", 0),
+                        weight=set_log.get("weight", 0.0),
+                    )
+                )
+            exercises.append(
+                Exercise(
+                    name=exercise_log.get("name", ""),
+                    one_rep_max=exercise_log.get("oneRepMax", 0.0),
+                    type=exercise_log.get("type", "lift"),
+                    sets=sets
+                )
+            )
+        return Workout(
+            date=date,
+            exercises=exercises,
+            rest_timer=exercise_log.get("restTimer", 0),
+            session_length=exercise_log.get("sessionLength", 0),
+            actual_workout_length=exercise_log.get("actualWorkoutLength", 0),
+            wasted_time=exercise_log.get("wastedTime", 0),
+            total_weight_lifted=exercise_log.get("weightLifted", 0)
+        )
 
     def run_historical_job(self, from_date):
+        date_to_run = self.historical_job_from_date
+        while date_to_run != self.current_iso_date():
+            try:
+                self.run_job_for_date(date_to_run)
+                date_to_run += datetime.timedelta(days=1)
+                time.sleep(1)
+            except Exception as e:
+                # Could have ratelimit issues, wait a minute then try to continue
+                print(e)
+                time.sleep(60)
         raise NotImplementedError()
+
+    def run_job_for_date(self, date):
+        """
+        Runs the node subprocess for a date, grabs the json output, converts it into a Workout object and pushes that
+        to the api.
+        :param date: The date to get the information for
+        """
+        date = "2021-03-31" # We know we have data for this date
+        result = subprocess.run(['node', 'src/ingesters/workouts/node/index.js', self.jefit_username, date], stdout=subprocess.PIPE)
+        workout_logs_for_day_dict = json.loads(result.stdout)
+        self_api_workout = self.convert_jefit_workout_logs_to_self_api_format(date, workout_logs_for_day_dict)
+        self.self_api_client.update_daily_workout(self_api_workout)
+        print("Updated calories for date {} with value {}.".format(date, self_api_workout))
 
     @staticmethod
     def get_self_api_workouts_client(server_location):
         config = ServiceConfiguration()
         config.uris = [server_location]
-        client = RequestsClient.create(CalorieService, user_agent="self-magritte", service_config=config)
+        client = RequestsClient.create(WorkoutService, user_agent="self-magritte", service_config=config)
         return client

@@ -36,12 +36,14 @@ types:
           sugar: double
 
       Set:
+        package: com.chrisbattarbee.self.workouts
         fields:
           index: integer
           weight: double
           reps: integer
 
       Exercise:
+        package: com.chrisbattarbee.self.workouts
         fields:
           name: string
           oneRepMax: double
@@ -49,6 +51,7 @@ types:
           sets: list<Set>
 
       Workout:
+        package: com.chrisbattarbee.self.workouts
         fields:
           exercises: list<Exercise>
           sessionLength: integer

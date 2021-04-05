@@ -7,5 +7,5 @@ const username = args[0];
 const date = args[1];
 
 jefit.fetchSingleDate(username, date, x => {
-    console.log(util.inspect(x, {showHidden: false, depth: null}));
+    console.log(JSON.stringify(x));
 });

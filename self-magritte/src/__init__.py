@@ -13,7 +13,7 @@ def main():
     eval(config['calories']['when'])
 
     job = WorkoutIngest.run_job
-    calorie_ingest = CalorieIngest(config)
+    workout_ingest = WorkoutIngest(config)
     eval(config['workouts']['when'])
 
     schedule.run_all()
