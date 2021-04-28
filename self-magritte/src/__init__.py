@@ -1,8 +1,18 @@
+import logging
+
 from .ingesters.calories import CalorieIngest
 from .ingesters.workouts import WorkoutIngest
 from .utils.ssm_parameter_store import SSMParameterStore
 import schedule
 import time
+
+
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+logging.root.setLevel(logging.INFO)
 
 
 def main():
