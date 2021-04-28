@@ -1,10 +1,13 @@
 import time
+from functools import partial
 
 import myfitnesspal
 from ..ingest import IngestInterface
 from self_api.self_calories import CalorieService, FoodEntry, Meal, MacroGoals, MealsForDay
 from conjure_python_client import RequestsClient, ServiceConfiguration
 import datetime
+
+print = partial(print, flush=True)
 
 
 class CalorieIngest(IngestInterface):

@@ -1,4 +1,6 @@
 import datetime
+from functools import partial
+
 from conjure_python_client import ServiceConfiguration, RequestsClient
 from self_api.self_workouts import WorkoutService, Workout, Set, Exercise
 from typing import Dict
@@ -7,6 +9,8 @@ from ..ingest import IngestInterface
 import time
 import subprocess
 import json
+
+print = partial(print, flush=True)
 
 
 class WorkoutIngest(IngestInterface):
