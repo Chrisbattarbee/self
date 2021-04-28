@@ -1,5 +1,5 @@
+import logging
 import time
-from functools import partial
 
 import myfitnesspal
 from ..ingest import IngestInterface
@@ -7,7 +7,7 @@ from self_api.self_calories import CalorieService, FoodEntry, Meal, MacroGoals, 
 from conjure_python_client import RequestsClient, ServiceConfiguration
 import datetime
 
-print = partial(print, flush=True)
+logger = logging.getLogger('magritte/calories')
 
 
 class CalorieIngest(IngestInterface):
@@ -17,12 +17,12 @@ class CalorieIngest(IngestInterface):
             self.should_run_historical_job = config['calories']['should_run_historical_job'] == "true"
         except:
             self.should_run_historical_job = False
-            print("Calories: Could not find config for should_run_historical_job, setting to default of {}".format(self.should_run_historical_job))
+            logger.info("Calories: Could not find config for should_run_historical_job, setting to default of {}".format(self.should_run_historical_job))
         try:
             self.historical_job_from_date = datetime.date.fromisoformat(config['calories']['historical_job_from_date'])
         except:
             self.historical_job_from_date = datetime.date.fromisoformat("2015-01-01")
-            print("Calories: Could not find config for should_run_historical_job, setting to default of {}".format(self.historical_job_from_date))
+            logger.info("Calories: Could not find config for should_run_historical_job, setting to default of {}".format(self.historical_job_from_date))
 
         # Without these parameters, we can't do anything so we should just crash out
         self.self_api_client = self.get_self_api_calories_client(config['server_location'])
@@ -42,7 +42,7 @@ class CalorieIngest(IngestInterface):
                 time.sleep(1)
             except Exception as e:
                 # Could have ratelimit issues, wait a minute then try to continue
-                print(e)
+                logger.error(e)
                 time.sleep(60)
 
     def get_logs_for_date(self, date):
@@ -54,9 +54,9 @@ class CalorieIngest(IngestInterface):
         meals_for_day, macro_goals = self.convert_mfp_day_logs_to_self_api_format(iso_date.isoformat(), logs)
 
         self.self_api_client.update_daily_calories(meals_for_day)
-        print("Updated calories for date {} with value {}.".format(iso_date.isoformat(), meals_for_day))
+        logger.info("Updated calories for date {} with value {}.".format(iso_date.isoformat(), meals_for_day))
         self.self_api_client.update_daily_macro_goals(macro_goals)
-        print("Updated calories for date {} with value {}.".format(iso_date.isoformat(), macro_goals))
+        logger.info("Updated calories for date {} with value {}.".format(iso_date.isoformat(), macro_goals))
 
     @staticmethod
     def current_iso_date():
