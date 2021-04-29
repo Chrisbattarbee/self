@@ -3,7 +3,6 @@ import {DefaultHttpApiBridge} from "conjure-client";
 import {CalorieService} from "conjure-self-api/self-calories";
 import {IMealsForDay} from "conjure-self-api/self-calories/mealsForDay";
 import {HistoricalMacros} from "./HistoricalMacros";
-import * as _ from "lodash";
 import {CurrentDay} from "./CurrentDay";
 import {Container, Divider} from "semantic-ui-react";
 import {IMacroGoals} from "conjure-self-api/self-calories/macroGoals";

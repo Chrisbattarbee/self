@@ -37,11 +37,6 @@ interface PartitionedMaxWeight {
 
 
 class ExerciseGraph extends React.Component<ExerciseGraphProps, ExerciseGraphState> {
-    constructor(props: Readonly<ExerciseGraphProps> | ExerciseGraphProps) {
-        super(props);
-    }
-
-
     private static isDateBetween(date: string, startDate: string, endDate: string): boolean {
         let d = Date.parse(date);
         let d1 = Date.parse(startDate);
@@ -178,7 +173,7 @@ class ExerciseGraph extends React.Component<ExerciseGraphProps, ExerciseGraphSta
                 startDate: partition.startDate,
                 maxWeight: maximumWeightForPartitionExerciseNameAndRepRange
             }
-        }).filter(x => x.maxWeight != -Infinity)
+        }).filter(x => x.maxWeight !== -Infinity)
     }
 
     private static convertToRenderable(partitionedMaxWeights: PartitionedMaxWeight[]) {
