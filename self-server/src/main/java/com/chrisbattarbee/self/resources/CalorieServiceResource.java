@@ -21,6 +21,7 @@ import com.chrisbattarbee.self.calories.CalorieService;
 import com.chrisbattarbee.self.calories.MacroGoals;
 import com.chrisbattarbee.self.calories.MealsForDay;
 import com.palantir.logsafe.SafeArg;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +59,18 @@ public final class CalorieServiceResource extends SelfResource implements Calori
     }
 
     @Override
+    public List<MealsForDay> getDailyCaloriesInRange(String startDate, String endDate) {
+        logger.info(
+                "Received request to get calories between {} and {}",
+                SafeArg.of("startDate", startDate),
+                SafeArg.of("endDate", endDate));
+
+        List<String> datesInRange = Utils.getDatesInRange(startDate, endDate);
+        return super.getDynamoManager()
+                .getObjectsFromDynamoBatched(CALORIES_DYNAMO_TABLE, TABLE_KEY, datesInRange, MealsForDay.class);
+    }
+
+    @Override
     public void updateDailyMacroGoals(MacroGoals updateMacroGoalsRequest) {
         logger.info(
                 "Received request to update macro goals on {}", SafeArg.of("date", updateMacroGoalsRequest.getDate()));
@@ -69,5 +82,17 @@ public final class CalorieServiceResource extends SelfResource implements Calori
         logger.info("Received request to get macro goals on {}", SafeArg.of("date", date));
         return super.getDynamoManager()
                 .getObjectFromDynamo(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY, date, MacroGoals.class);
+    }
+
+    @Override
+    public List<MacroGoals> getDailyMacroGoalsInRange(String startDate, String endDate) {
+        logger.info(
+                "Received request to get macro goals between {} and {}",
+                SafeArg.of("startDate", startDate),
+                SafeArg.of("endDate", endDate));
+
+        List<String> datesInRange = Utils.getDatesInRange(startDate, endDate);
+        return super.getDynamoManager()
+                .getObjectsFromDynamoBatched(MACRO_GOALS_DYNAMO_TABLE, TABLE_KEY, datesInRange, MacroGoals.class);
     }
 }

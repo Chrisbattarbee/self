@@ -26,7 +26,7 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
     constructor(props: CaloriePanelProps) {
         super(props);
         let bridge: DefaultHttpApiBridge = new DefaultHttpApiBridge({
-            baseUrl: "http://self.chrisbattarbee.com",
+            baseUrl: "http://localhost:8000",
             userAgent: {
                 productName: "self-api-frontend",
                 productVersion: "0.0.1"
@@ -47,20 +47,16 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
     }
 
     setLastWeeksMealsAndGoals() {
-        _.range(7).forEach(x => {
-            let date = this.dateXDaysAgo(x);
-            let dateString = date.toISOString().split('T')[0];
-            let mealsForDate = this.state.calorieService.getDailyCalories(dateString);
-            mealsForDate.then(meals => {
-                this.setState(state => {
-                    return {lastWeeksMeals: state.lastWeeksMeals.concat([meals])}
-                });
-            })
-            let goalsForDate = this.state.calorieService.getDailyMacroGoals(dateString);
-            goalsForDate.then(goals => {
-                this.setState(state => {
-                    return {lastWeeksGoals: state.lastWeeksGoals.concat([goals])}
-                });
+        let currentDate = new Date(Date.now()).toISOString().split('T')[0];
+        let dateInThePast = this.dateXDaysAgo(7).toISOString().split('T')[0];
+        this.state.calorieService.getDailyCaloriesInRange(dateInThePast, currentDate).then(meals => {
+            this.setState(state => {
+                return {lastWeeksMeals: meals}
+            });
+        });
+        this.state.calorieService.getDailyMacroGoalsInRange(dateInThePast, currentDate).then(macroGoals => {
+            this.setState(state => {
+                return {lastWeeksGoals: macroGoals}
             });
         });
     }

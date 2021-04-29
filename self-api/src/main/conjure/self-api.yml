@@ -92,6 +92,16 @@ services:
           date:
             type: string
         returns: Workout
+      getWorkoutsInRange:
+        docs: Returns the between startDate (inclusive) and endDate (inclusive).
+        http: GET /workout/{startDate}/{endDate}
+        args:
+          startDate:
+            type: string
+          endDate:
+            type: string
+        returns: list<Workout>
+
 
   CalorieService:
     name: Calorie Tracking Service
@@ -113,6 +123,14 @@ services:
           date:
             type: string
         returns: MealsForDay
+      getDailyCaloriesInRange:
+        http: GET /calories/{startDate}/{endDate}
+        args:
+          startDate:
+            type: string
+          endDate:
+            type: string
+        returns: list<MealsForDay>
       updateDailyMacroGoals:
         http: PUT /macrogoals
         args:
@@ -125,3 +143,11 @@ services:
           date:
             type: string
         returns: MacroGoals
+      getDailyMacroGoalsInRange:
+        http: GET /macrogoals/{startDate}/{endDate}
+        args:
+          startDate:
+            type: string
+          endDate:
+            type: string
+        returns: list<MacroGoals>

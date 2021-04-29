@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.TableKeysAndAttributes;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
@@ -14,7 +15,12 @@ import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.palantir.logsafe.SafeArg;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +54,38 @@ public final class DynamoManager {
                 "Successfully inserted item {} into dynamodb table {}.",
                 SafeArg.of("item", jsonDynamoBlob),
                 SafeArg.of("table", tableName));
+    }
+
+    @SuppressWarnings("DangerousParallelStreamUsage")
+    public <T> List<T> getObjectsFromDynamoBatched(
+            String tableName, String keyName, List<String> keys, Class<T> objectType) {
+        // Dynamo only allows batches of 100 at a time, so we need to partition our input into batches of 100 or less
+        // then reassemble before returning
+        return Lists.newArrayList(Iterables.concat(Lists.partition(keys, 100).parallelStream()
+                .map(keyPartition -> {
+                    TableKeysAndAttributes tableKeysAndAttributes = new TableKeysAndAttributes(tableName);
+                    keyPartition.forEach(key -> {
+                        tableKeysAndAttributes.addPrimaryKey(new PrimaryKey(keyName, key));
+                    });
+                    List<Item> items = documentDynamoClient
+                            .batchGetItem(tableKeysAndAttributes)
+                            .getTableItems()
+                            .getOrDefault(tableName, new ArrayList<>());
+                    List<T> retList = new ArrayList<>();
+                    items.forEach(item -> {
+                        try {
+                            retList.add(objectMapper.readValue(item.toJSON(), objectType));
+                        } catch (JsonProcessingException e) {
+                            logger.error(
+                                    "Could not decode json {} into objectType: {}. Error: {}",
+                                    SafeArg.of("json", item.toJSON()),
+                                    SafeArg.of("objectType", objectType),
+                                    e);
+                        }
+                    });
+                    return retList;
+                })
+                .collect(Collectors.toList())));
     }
 
     public <T> T getObjectFromDynamo(String tableName, String keyName, String key, Class<T> objectType) {
