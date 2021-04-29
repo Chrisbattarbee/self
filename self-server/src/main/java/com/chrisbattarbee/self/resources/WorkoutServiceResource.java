@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.chrisbattarbee.self.workouts.Workout;
 import com.chrisbattarbee.self.workouts.WorkoutService;
 import com.palantir.logsafe.SafeArg;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,18 @@ public final class WorkoutServiceResource extends SelfResource implements Workou
     public Workout getDailyWorkout(String date) {
         logger.info("Received request to get workout for {}", SafeArg.of("date", date));
         return super.getDynamoManager().getObjectFromDynamo(WORKOUTS_DYNAMO_TABLE, TABLE_KEY, date, Workout.class);
+    }
+
+    @Override
+    public List<Workout> getWorkoutsInRange(String startDate, String endDate) {
+        logger.info(
+                "Received request to get workouts between {} and {}",
+                SafeArg.of("startDate", startDate),
+                SafeArg.of("endDate", endDate));
+
+        List<String> datesInRange = Utils.getDatesInRange(startDate, endDate);
+        return super.getDynamoManager()
+                .getObjectsFromDynamoBatched(WORKOUTS_DYNAMO_TABLE, TABLE_KEY, datesInRange, Workout.class);
     }
 
     @Override
