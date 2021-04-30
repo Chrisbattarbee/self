@@ -93,7 +93,7 @@ class WorkoutPanel extends React.Component<WorkoutPanelProps, WorkoutPanelState>
                                            exerciseName={"Barbell Bench Press"}
                                            exerciseRepRange={8}
                                            workouts={this.state.workouts}
-                                           granularity={Granularity.WEEK}
+                                           granularity={Granularity.DAY}
                                            additionalTitleText={"(hypertrophy)"}
                             />
                         </GridColumn>
@@ -103,7 +103,7 @@ class WorkoutPanel extends React.Component<WorkoutPanelProps, WorkoutPanelState>
                                            exerciseName={"Barbell Squat"}
                                            exerciseRepRange={8}
                                            workouts={this.state.workouts}
-                                           granularity={Granularity.WEEK}
+                                           granularity={Granularity.DAY}
                                            additionalTitleText={"(hypertrophy)"}
                             />
                         </GridColumn>
@@ -116,7 +116,7 @@ class WorkoutPanel extends React.Component<WorkoutPanelProps, WorkoutPanelState>
                                            exerciseName={"Cable Seated Row"}
                                            exerciseRepRange={8}
                                            workouts={this.state.workouts}
-                                           granularity={Granularity.WEEK}
+                                           granularity={Granularity.DAY}
                                            additionalTitleText={"(hypertrophy)"}
                             />
                         </GridColumn>
@@ -126,7 +126,7 @@ class WorkoutPanel extends React.Component<WorkoutPanelProps, WorkoutPanelState>
                                            exerciseName={"Dumbbell One Arm Row"}
                                            exerciseRepRange={8}
                                            workouts={this.state.workouts}
-                                           granularity={Granularity.WEEK}
+                                           granularity={Granularity.DAY}
                                            additionalTitleText={"(hypertrophy)"}
                             />
                         </GridColumn>
@@ -140,7 +140,7 @@ class WorkoutPanel extends React.Component<WorkoutPanelProps, WorkoutPanelState>
                                            exerciseName={"Barbell Preacher Curl"}
                                            exerciseRepRange={8}
                                            workouts={this.state.workouts}
-                                           granularity={Granularity.WEEK}
+                                           granularity={Granularity.DAY}
                                            additionalTitleText={"(hypertrophy)"}
                             />
                         </GridColumn>
@@ -150,7 +150,7 @@ class WorkoutPanel extends React.Component<WorkoutPanelProps, WorkoutPanelState>
                                            exerciseName={"Cable Triceps Pushdown"}
                                            exerciseRepRange={12}
                                            workouts={this.state.workouts}
-                                           granularity={Granularity.WEEK}
+                                           granularity={Granularity.DAY}
                                            additionalTitleText={"(hypertrophy)"}
                             />
                         </GridColumn>
