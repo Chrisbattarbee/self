@@ -25,7 +25,7 @@ class CaloriePanel extends React.Component<CaloriePanelProps, CaloriePanelState>
     constructor(props: CaloriePanelProps) {
         super(props);
         let bridge: DefaultHttpApiBridge = new DefaultHttpApiBridge({
-            baseUrl: "http://localhost:8000",
+            baseUrl: "http://self.chrisbattarbee.com",
             userAgent: {
                 productName: "self-api-frontend",
                 productVersion: "0.0.1"

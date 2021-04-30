@@ -24,7 +24,7 @@ class WorkoutPanel extends React.Component<WorkoutPanelProps, WorkoutPanelState>
     constructor(props: WorkoutPanelProps) {
         super(props);
         let bridge: DefaultHttpApiBridge = new DefaultHttpApiBridge({
-            baseUrl: "http://localhost:8000",
+            baseUrl: "http://self.chrisbattarbee.com",
             userAgent: {
                 productName: "self-api-frontend",
                 productVersion: "0.0.1"
