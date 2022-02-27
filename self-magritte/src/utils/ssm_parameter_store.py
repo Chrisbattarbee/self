@@ -28,6 +28,7 @@ class SSMParameterStore(object):
     """
     Provide a dictionary-like interface to access AWS SSM Parameter Store
     """
+
     def __init__(self, prefix=None, ssm_client=None, ttl=None):
         self._prefix = (prefix or '').rstrip('/') + '/'
         self._client = ssm_client or boto3.client('ssm')

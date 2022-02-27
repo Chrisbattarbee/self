@@ -25,12 +25,16 @@ class WorkoutIngest(IngestInterface):
             self.should_run_historical_job = config['workouts']['should_run_historical_job'] == "true"
         except:
             self.should_run_historical_job = False
-            logger.info("Workouts: Could not find config for should_run_historical_job, setting to default of {}".format(self.should_run_historical_job))
+            logger.info(
+                "Workouts: Could not find config for should_run_historical_job, setting to default of {}".format(
+                    self.should_run_historical_job))
         try:
             self.historical_job_from_date = datetime.date.fromisoformat(config['workouts']['historical_job_from_date'])
         except:
             self.historical_job_from_date = datetime.date.fromisoformat("2015-01-01")
-            logger.info("Workouts: Could not find config for should_run_historical_job, setting to default of {}".format(self.historical_job_from_date))
+            logger.info(
+                "Workouts: Could not find config for should_run_historical_job, setting to default of {}".format(
+                    self.historical_job_from_date))
 
         # Without these parameters, we can't do anything so we should just crash out
         self.self_api_client = self.get_self_api_workouts_client(config['server_location'])
@@ -45,11 +49,10 @@ class WorkoutIngest(IngestInterface):
             self.run_historical_job()
         self.run_job_for_date(self.current_iso_date())
 
-
     @staticmethod
     def convert_jefit_workout_logs_to_self_api_format(date, jefit_logs: Dict):
         exercises = []
-        for exercise_log in jefit_logs.get("exercises" , []):
+        for exercise_log in jefit_logs.get("exercises", []):
             sets = []
             for set_log in exercise_log.get("sets", []):
                 sets.append(

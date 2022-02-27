@@ -17,16 +17,21 @@ class CalorieIngest(IngestInterface):
             self.should_run_historical_job = config['calories']['should_run_historical_job'] == "true"
         except:
             self.should_run_historical_job = False
-            logger.info("Calories: Could not find config for should_run_historical_job, setting to default of {}".format(self.should_run_historical_job))
+            logger.info(
+                "Calories: Could not find config for should_run_historical_job, setting to default of {}".format(
+                    self.should_run_historical_job))
         try:
             self.historical_job_from_date = datetime.date.fromisoformat(config['calories']['historical_job_from_date'])
         except:
             self.historical_job_from_date = datetime.date.fromisoformat("2015-01-01")
-            logger.info("Calories: Could not find config for should_run_historical_job, setting to default of {}".format(self.historical_job_from_date))
+            logger.info(
+                "Calories: Could not find config for should_run_historical_job, setting to default of {}".format(
+                    self.historical_job_from_date))
 
         # Without these parameters, we can't do anything so we should just crash out
         self.self_api_client = self.get_self_api_calories_client(config['server_location'])
-        self.mfp_client = myfitnesspal.Client(username=config['calories']['mfp_username'], password=config['calories']['mfp_password'])
+        self.mfp_client = myfitnesspal.Client(username=config['calories']['mfp_username'],
+                                              password=config['calories']['mfp_password'])
 
     def run_job(self):
         if self.should_run_historical_job:
@@ -102,7 +107,7 @@ class CalorieIngest(IngestInterface):
                 )
             )
 
-        return MealsForDay(date=date,meals=meals), macro_goals
+        return MealsForDay(date=date, meals=meals), macro_goals
 
     @staticmethod
     def get_self_api_calories_client(server_location):
