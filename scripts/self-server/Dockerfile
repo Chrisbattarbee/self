@@ -1,4 +1,4 @@
-FROM java:8u111-jdk-alpine
+FROM openjdk:11.0.14.1-oracle
 
 RUN set -eux; \
     mkdir -p /opt/self/services;
