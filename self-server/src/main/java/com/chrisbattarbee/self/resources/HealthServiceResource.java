@@ -34,7 +34,7 @@ public class HealthServiceResource extends SelfResource implements HealthService
                                 HealthDataPoint.builder()
                                         .name(healthMetric.getName())
                                         .unit(healthMetric.getUnits())
-                                        .date(healthMetricInner.getDate())
+                                        .date(parseDateFromDateTime(healthMetricInner.getDate()))
                                         .amount(healthMetricInner.getQty())
                                         .key(buildKey(
                                                 healthMetric.getName(),
