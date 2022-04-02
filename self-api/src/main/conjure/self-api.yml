@@ -61,6 +61,45 @@ types:
           totalWeightLifted: integer
           date: string
 
+      HealthDataPoint:
+        package: com.chrisbattarbee.self.workouts
+        fields:
+          key: string
+          name: string
+          unit: string
+          date: string
+          amount: double
+
+      PostHealthData:
+        package: com.chrisbattarbee.self.workouts
+        fields:
+          data: HealthDataInner
+
+      HealthDataInner:
+        package: com.chrisbattarbee.self.workouts
+        fields:
+          metrics: list<HealthMetric>
+          workouts: list<NullObject>
+
+      HealthMetric:
+        package: com.chrisbattarbee.self.workouts
+        fields:
+          name: string
+          units: string
+          data: list<HealthMetricInner>
+
+      HealthMetricInner:
+        package: com.chrisbattarbee.self.workouts
+        fields:
+          qty: double
+          date: string
+
+      # Used to stub objects where we know nothing will be reported in actuality
+      NullObject:
+        package: com.chrisbattarbee.self.workouts
+        fields:
+          nullField: string
+
     errors:
       Internal:
         namespace: Calories
@@ -151,3 +190,28 @@ services:
           endDate:
             type: string
         returns: list<MacroGoals>
+
+
+  HealthService:
+    name: Apple Health Tracking Service
+    package: com.chrisbattarbee.self.health
+    base-path: /health
+    docs: |
+      API for retrieving and adding apple health information.
+
+    endpoints:
+      putHealthData:
+        http: POST /update
+        args:
+          data: PostHealthData
+
+      getHealthDataInRange:
+        http: GET /{metricName}/{startDate}/{endDate}
+        args:
+          metricName:
+            type: string
+          startDate:
+            type: string
+          endDate:
+            type: string
+        returns: list<HealthDataPoint>
