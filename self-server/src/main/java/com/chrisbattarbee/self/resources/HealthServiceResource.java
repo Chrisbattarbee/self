@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HealthServiceResource extends SelfResource implements HealthService {
+public final class HealthServiceResource extends SelfResource implements HealthService {
     private static final String HEALTH_DYNAMO_TABLE = "self_api_health";
     private static final String TABLE_KEY = "key";
     private static final long READ_THROUGHPUT = 1L;
