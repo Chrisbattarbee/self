@@ -95,7 +95,7 @@ types:
       NullObject:
         package: com.chrisbattarbee.self.workouts
         fields:
-          nullField: String
+          nullField: string
 
     errors:
       Internal:
@@ -205,6 +205,8 @@ services:
       getHealthDataInRange:
         http: GET /{metricName}/{startDate}/{endDate}
         args:
+          metricName:
+            type: string
           startDate:
             type: string
           endDate:
