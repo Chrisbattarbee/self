@@ -4,11 +4,14 @@ import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.chrisbattarbee.self.health.HealthService;
 import com.chrisbattarbee.self.workouts.HealthDataPoint;
 import com.chrisbattarbee.self.workouts.PostHealthData;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.palantir.logsafe.SafeArg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HealthServiceResource extends SelfResource implements HealthService {
     private static final String HEALTH_DYNAMO_TABLE = "self_api_health";
@@ -25,32 +28,47 @@ public class HealthServiceResource extends SelfResource implements HealthService
         logger.info("Received request to put health data");
         data.getData()
                 .getMetrics()
-                .forEach(healthMetric -> healthMetric.getData().forEach(healthMetricInner -> {
-                    logger.info(
-                            "Putting {} health data into dynamo for date {}",
-                            SafeArg.of("metric", healthMetric.getName()),
-                            SafeArg.of("date", healthMetricInner.getDate()));
-                    super.getDynamoManager()
-                            .putObjectIntoDynamo(
-                                    HEALTH_DYNAMO_TABLE,
-                                    HealthDataPoint.builder()
-                                            .name(healthMetric.getName())
-                                            .unit(healthMetric.getUnits())
-                                            .date(healthMetricInner.getDate())
-                                            .amount(healthMetricInner.getQty())
-                                            .key(String.format(
-                                                    "%s-%s", healthMetric.getName(), healthMetricInner.getDate())));
-                }));
+                .forEach(healthMetric -> healthMetric.getData().forEach(healthMetricInner -> super.getDynamoManager()
+                        .putObjectIntoDynamo(
+                                HEALTH_DYNAMO_TABLE,
+                                HealthDataPoint.builder()
+                                        .name(healthMetric.getName())
+                                        .unit(healthMetric.getUnits())
+                                        .date(healthMetricInner.getDate())
+                                        .amount(healthMetricInner.getQty())
+                                        .key(buildKey(
+                                                healthMetric.getName(),
+                                                parseDateFromDateTime(healthMetricInner.getDate())))
+                                        .build())));
     }
 
     @Override
-    public List<HealthDataPoint> getHealthDataInRange(String _metricName, String _startDate, String _endDate) {
-        throw new UnsupportedOperationException();
+    public List<HealthDataPoint> getHealthDataInRange(String metricName, String startDate, String endDate) {
+        logger.info(
+                "Received request to get {} between {} and {}",
+                SafeArg.of("metricName", metricName),
+                SafeArg.of("startDate", startDate),
+                SafeArg.of("endDate", endDate));
+
+        List<String> keys = Utils.getDatesInRange(startDate, endDate).stream()
+                .map(date -> buildKey(metricName, date))
+                .collect(Collectors.toList());
+
+        return super.getDynamoManager()
+                .getObjectsFromDynamoBatched(HEALTH_DYNAMO_TABLE, TABLE_KEY, keys, HealthDataPoint.class);
     }
 
     @Override
     void createDynamoTablesIfTheyDontExist() {
         super.getDynamoManager()
                 .createDynamoTableIfItDoesntExist(HEALTH_DYNAMO_TABLE, TABLE_KEY, PROVISIONED_THROUGHPUT);
+    }
+
+    private static String parseDateFromDateTime(String dateTime) {
+        return Iterables.get(Splitter.on(' ').split(dateTime), 0);
+    }
+
+    private static String buildKey(String metricName, String date) {
+        return String.format("%s-%s", metricName, date);
     }
 }
