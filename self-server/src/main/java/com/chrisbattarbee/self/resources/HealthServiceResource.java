@@ -7,11 +7,10 @@ import com.chrisbattarbee.self.workouts.PostHealthData;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.palantir.logsafe.SafeArg;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HealthServiceResource extends SelfResource implements HealthService {
     private static final String HEALTH_DYNAMO_TABLE = "self_api_health";
