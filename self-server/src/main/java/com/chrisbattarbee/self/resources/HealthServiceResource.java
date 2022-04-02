@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public class HealthServiceResource extends SelfResource implements HealthService {
-    private static final String HEALTH_DYNAMO_TABLE = "self_api_health_service";
+    private static final String HEALTH_DYNAMO_TABLE = "self_api_health";
     private static final String TABLE_KEY = "key";
     private static final long READ_THROUGHPUT = 1L;
     private static final long WRITE_THROUGHPUT = 1L;
@@ -44,7 +44,7 @@ public class HealthServiceResource extends SelfResource implements HealthService
     }
 
     @Override
-    public List<HealthDataPoint> getHealthDataInRange(String metricName, String startDate, String endDate) {
+    public List<HealthDataPoint> getHealthDataInRange(String _metricName, String _startDate, String _endDate) {
         throw new UnsupportedOperationException();
     }
 
