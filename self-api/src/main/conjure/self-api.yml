@@ -64,6 +64,7 @@ types:
       HealthDataPoint:
         package: com.chrisbattarbee.self.workouts
         fields:
+          key: string
           name: string
           unit: string
           date: string
@@ -83,6 +84,8 @@ types:
       HealthMetric:
         package: com.chrisbattarbee.self.workouts
         fields:
+          name: string
+          units: string
           data: list<HealthMetricInner>
 
       HealthMetricInner:
