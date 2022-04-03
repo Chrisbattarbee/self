@@ -14,7 +14,7 @@ interface WorkoutPanelProps {
 
 interface WorkoutPanelState {
     workoutService: WorkoutService
-    interval: ReturnType<typeof setTimeout> | undefined;
+    interval: number | undefined;
     workouts: IWorkout[]
 }
 
