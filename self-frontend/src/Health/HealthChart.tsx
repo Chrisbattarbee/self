@@ -15,6 +15,7 @@ import "react-vis/dist/style.css";
 interface HealthChartProps {
     width: number
     height: number
+    maxValue: number
     data: LineSeriesPoint[] | any[]
     metricName: string
     unit: string
@@ -25,8 +26,13 @@ interface HealthChartState {
 
 class HealthChart extends React.Component<HealthChartProps, HealthChartState> {
     render() {
+        let tickValues = [];
+        for (let i = 0; i <= 7; i++) {
+            tickValues.push(this.props.maxValue / 7 * i)
+        }
+        console.log(tickValues);
         return (
-            <XYPlot style={{margin: '10px'}} width={this.props.width} height={this.props.height} xType={"time"}>
+            <XYPlot yDomain={[0, this.props.maxValue]} style={{margin: '10px'}} width={this.props.width} height={this.props.height} xType={"time"}>
                 <HorizontalGridLines style={{stroke: '#B7E9ED'}}/>
                 <VerticalGridLines style={{stroke: '#B7E9ED'}}/>
                 <XAxis

@@ -70,12 +70,13 @@ class HealthPanel extends React.Component<HealthPanelProps, HealthPanelState> {
         let components: JSX.Element[] = [];
 
         this.state.metrics.forEach((value, key) => {
-            components.push(
-                <HealthChart metricName={key} unit={value[0].unit} width={300} height={200} data={value.map(x => {
-                        return {x: new Date(x.date), y: x.amount}
+            return components.push(
+                <HealthChart maxValue={Math.max(...value.map((x) => x.amount as number))} metricName={key}
+                             unit={value[0].unit} width={300} height={200} data={value.map(x => {
+                        return {x: new Date(x.date), y: x.amount};
                     }
                 )}/>
-            )
+            );
         })
         return (
             <Container style={{width: 600}}>
