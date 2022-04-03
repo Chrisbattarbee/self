@@ -4,16 +4,16 @@
   "private": true,
   "dependencies": {
     "@babel/preset-react": "^7.13.13",
-    "@nivo/line": "^0.67.0",
     "@nivo/bar": "^0.67.0",
     "@nivo/core": "^0.67.0",
+    "@nivo/line": "^0.67.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/d3-shape": "^2.0.0",
     "@types/jest": "^26.0.15",
     "@types/lodash": "^4.14.168",
-    "@types/node": "^12.0.0",
+    "@types/node": "^16.14.2",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "babel-runtime": "^6.26.0",
@@ -59,6 +59,6 @@
     "gulp": "^4.0.2",
     "gulp-inline-source": "^4.0.0",
     "gulp-replace": "^1.0.0",
-    "ts-loader": "^8.0.18"
+    "ts-loader": "^9.2.8"
   }
 }
