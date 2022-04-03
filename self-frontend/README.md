@@ -1,3 +1,7 @@
+# READ CHRIS
+
+Install node 16.14.2 to get ts-loader to work
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

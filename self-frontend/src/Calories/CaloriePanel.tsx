@@ -16,7 +16,7 @@ interface CaloriePanelState {
     calorieService: CalorieService,
     lastWeeksMeals: IMealsForDay[],
     lastWeeksGoals: IMacroGoals[],
-    interval: ReturnType<typeof setTimeout> | undefined;
+    interval: number | undefined;
 }
 
 
