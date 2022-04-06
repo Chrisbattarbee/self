@@ -4,6 +4,7 @@ import {IExercise} from "conjure-self-api/self-workouts/exercise";
 import {ISet} from "conjure-self-api/self-workouts/set";
 import {ResponsiveLine} from "@nivo/line";
 import {dateToString} from "../Utils";
+import {HealthChart} from "../Health/HealthChart";
 
 enum Granularity {
     DAY,
@@ -193,50 +194,17 @@ class ExerciseGraph extends React.Component<ExerciseGraphProps, ExerciseGraphSta
             this.props.exerciseName,
             this.props.exerciseRepRange
         );
-        let renderableData = ExerciseGraph.convertToRenderable(maxWeightForRepRange);
-        console.log(renderableData);
+        let data = maxWeightForRepRange.map(value => {
+            return {
+                x: new Date(value.startDate),
+                y: value.maxWeight as number
+            }
+        });
+
         return (
-            <div style={{height: 200, width: 400, margin:"auto"}}>
-                <h3 style={{textAlign: "center"}}>{this.props.exerciseName + " at " + this.props.exerciseRepRange + " reps" + (this.props.additionalTitleText ? " " + this.props.additionalTitleText : "")}</h3>
-                <ResponsiveLine
-                    data={renderableData}
-                    margin={{ top: 20, right: 20, bottom: 100, left: 60 }}
-                    xScale={{ type: 'time', format: "%Y-%m-%d" }}
-                    xFormat={"time:%Y-%m-%d"}
-                    yScale={{ type: 'linear' }}
-                    curve="monotoneX"
-                    axisTop={null}
-                    axisBottom={{
-                        tickValues: 5,
-                        tickPadding: 5,
-                        tickRotation: 0,
-                        legend: 'Date',
-                        legendOffset: 36,
-                        legendPosition: 'middle',
-                        format:"%m-%d"
-                    }}
-                    axisLeft={{
-                        tickValues: 5,
-                        tickPadding: 5,
-                        tickRotation: 0,
-                        legend: 'Weight',
-                        legendOffset: -40,
-                        legendPosition: 'middle'
-                    }}
-                    enableGridX={false}
-                    gridYValues={5}
-                    gridXValues={5}
-                    enableGridY={true}
-                    colors={{ scheme: 'spectral' }}
-                    lineWidth={2}
-                    pointSize={4}
-                    pointColor={{ theme: 'background' }}
-                    pointBorderWidth={1}
-                    pointBorderColor={{ from: 'serieColor' }}
-                    pointLabelYOffset={-12}
-                    useMesh={true}
-                />
-            </div>
+            <HealthChart width={350} height={300} data={data}
+                         metricName={this.props.exerciseName + " " + this.props.exerciseRepRange + " reps"}
+                         unit={"kg"}/>
         );
     }
 }
@@ -245,4 +213,4 @@ export
 {
     ExerciseGraph, Granularity
 }
-;
+    ;

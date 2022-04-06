@@ -1,6 +1,6 @@
 import React from "react";
 import {DefaultHttpApiBridge} from "conjure-client";
-import {Container} from "semantic-ui-react";
+import {Container, Grid} from "semantic-ui-react";
 import {HealthService} from "conjure-self-api/self-health/healthService";
 import {IHealthDataPoint} from "conjure-self-api/self-workouts/healthDataPoint";
 import {HealthChart} from "./HealthChart";
@@ -41,7 +41,7 @@ class HealthPanel extends React.Component<HealthPanelProps, HealthPanelState> {
 
     setMetric(metric: string) {
         let currentDate = new Date(Date.now()).toISOString().split('T')[0];
-        let dateInThePast = this.dateXDaysAgo(7).toISOString().split('T')[0];
+        let dateInThePast = this.dateXDaysAgo(31).toISOString().split('T')[0];
         this.state.healthService.getHealthDataInRange(metric, dateInThePast, currentDate).then(dataPoints => {
             this.setState(state => {
                 return {metrics: state.metrics.set(metric, dataPoints.sort((a, b) => a.date.localeCompare(b.date)))}
@@ -71,17 +71,22 @@ class HealthPanel extends React.Component<HealthPanelProps, HealthPanelState> {
 
         this.state.metrics.forEach((value, key) => {
             return components.push(
-                <HealthChart maxValue={Math.max(...value.map((x) => x.amount as number))} metricName={key}
-                             unit={value[0].unit} width={300} height={200} data={value.map(x => {
-                        return {x: new Date(x.date), y: x.amount};
-                    }
-                )}/>
+                <div style={{margin: 10}}>
+                    <HealthChart metricName={key}
+                                 unit={value[0].unit} width={300} height={200} data={value.map(x => {
+                            return {x: new Date(x.date), y: x.amount as number};
+                        }
+                    )}/>
+                </div>
             );
         })
         return (
-            <Container style={{width: 600}}>
-                {components}
-            </Container>
+            <div>
+                <h2 style={{textAlign: "center"}}>Health Data</h2>
+                <Grid columns={3} style={{padding: 20}}>
+                    {components}
+                </Grid>
+            </div>
         )
     }
 }

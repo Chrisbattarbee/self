@@ -11,12 +11,15 @@ import {
 import {curveCatmullRom} from "d3-shape";
 import "react-vis/dist/style.css";
 
+interface Valued {
+    x: any,
+    y: number
+}
 
 interface HealthChartProps {
     width: number
     height: number
-    maxValue: number
-    data: LineSeriesPoint[] | any[]
+    data: Valued[]
     metricName: string
     unit: string
 }
@@ -26,13 +29,10 @@ interface HealthChartState {
 
 class HealthChart extends React.Component<HealthChartProps, HealthChartState> {
     render() {
-        let tickValues = [];
-        for (let i = 0; i <= 7; i++) {
-            tickValues.push(this.props.maxValue / 7 * i)
-        }
-        console.log(tickValues);
+        let maxValue = Math.max(...this.props.data.map((value) => value.y as number))
         return (
-            <XYPlot yDomain={[0, this.props.maxValue]} style={{margin: '10px'}} width={this.props.width} height={this.props.height} xType={"time"}>
+            <XYPlot yDomain={[0, maxValue]} style={{margin: '10px'}} width={this.props.width}
+                    height={this.props.height} xType={"time"}>
                 <HorizontalGridLines style={{stroke: '#B7E9ED'}}/>
                 <VerticalGridLines style={{stroke: '#B7E9ED'}}/>
                 <XAxis
@@ -47,7 +47,7 @@ class HealthChart extends React.Component<HealthChartProps, HealthChartState> {
                         return date.toISOString().substr(5, 5)
                     }}
                 />
-                <YAxis title={this.props.metricName + " " + this.props.unit}/>
+                <YAxis title={this.props.metricName + " (" + this.props.unit + ")"}/>
                 <LineSeries
                     curve={curveCatmullRom.alpha(0.5)}
                     data={this.props.data}

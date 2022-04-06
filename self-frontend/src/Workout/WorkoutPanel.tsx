@@ -84,87 +84,47 @@ class WorkoutPanel extends React.Component<WorkoutPanelProps, WorkoutPanelState>
                         showWeekdayLabels={true}
                     />
                 </Container>
-                <Grid columns={2}>
-
+                <Grid columns={3} style={{padding: 20}}>
                     <GridRow>
                         <GridColumn>
-                            <ExerciseGraph startDate={dateToString(this.dateXDaysAgo(NUMBER_OF_DAYS_IN_THE_PAST_TO_GET))}
-                                           endDate={dateToString(this.dateXDaysAgo(0))}
-                                           exerciseName={"Barbell Bench Press"}
-                                           exerciseRepRange={8}
-                                           workouts={this.state.workouts}
-                                           granularity={Granularity.DAY}
-                                           additionalTitleText={"(hypertrophy)"}
+                            <ExerciseGraph
+                                startDate={dateToString(this.dateXDaysAgo(NUMBER_OF_DAYS_IN_THE_PAST_TO_GET))}
+                                endDate={dateToString(this.dateXDaysAgo(0))}
+                                exerciseName={"Barbell Bench Press"}
+                                exerciseRepRange={6}
+                                workouts={this.state.workouts}
+                                granularity={Granularity.DAY}
+                                additionalTitleText={"(hypertrophy)"}
                             />
                         </GridColumn>
                         <GridColumn>
-                            <ExerciseGraph startDate={dateToString(this.dateXDaysAgo(NUMBER_OF_DAYS_IN_THE_PAST_TO_GET))}
-                                           endDate={dateToString(this.dateXDaysAgo(0))}
-                                           exerciseName={"Barbell Squat"}
-                                           exerciseRepRange={8}
-                                           workouts={this.state.workouts}
-                                           granularity={Granularity.DAY}
-                                           additionalTitleText={"(hypertrophy)"}
+                            <ExerciseGraph
+                                startDate={dateToString(this.dateXDaysAgo(NUMBER_OF_DAYS_IN_THE_PAST_TO_GET))}
+                                endDate={dateToString(this.dateXDaysAgo(0))}
+                                exerciseName={"Barbell Squat"}
+                                exerciseRepRange={6}
+                                workouts={this.state.workouts}
+                                granularity={Granularity.DAY}
+                                additionalTitleText={"(hypertrophy)"}
+                            />
+                        </GridColumn>
+
+                        <GridColumn>
+                            <ExerciseGraph
+                                startDate={dateToString(this.dateXDaysAgo(NUMBER_OF_DAYS_IN_THE_PAST_TO_GET))}
+                                endDate={dateToString(this.dateXDaysAgo(0))}
+                                exerciseName={"Triceps Pushdown V Bar"}
+                                exerciseRepRange={8}
+                                workouts={this.state.workouts}
+                                granularity={Granularity.DAY}
+                                additionalTitleText={"(hypertrophy)"}
                             />
                         </GridColumn>
                     </GridRow>
-
-                    <GridRow>
-                        <GridColumn>
-                            <ExerciseGraph startDate={dateToString(this.dateXDaysAgo(NUMBER_OF_DAYS_IN_THE_PAST_TO_GET))}
-                                           endDate={dateToString(this.dateXDaysAgo(0))}
-                                           exerciseName={"Cable Seated Row"}
-                                           exerciseRepRange={8}
-                                           workouts={this.state.workouts}
-                                           granularity={Granularity.DAY}
-                                           additionalTitleText={"(hypertrophy)"}
-                            />
-                        </GridColumn>
-                        <GridColumn>
-                            <ExerciseGraph startDate={dateToString(this.dateXDaysAgo(NUMBER_OF_DAYS_IN_THE_PAST_TO_GET))}
-                                           endDate={dateToString(this.dateXDaysAgo(0))}
-                                           exerciseName={"Dumbbell One Arm Row"}
-                                           exerciseRepRange={8}
-                                           workouts={this.state.workouts}
-                                           granularity={Granularity.DAY}
-                                           additionalTitleText={"(hypertrophy)"}
-                            />
-                        </GridColumn>
-                    </GridRow>
-
-
-                    <GridRow>
-                        <GridColumn>
-                            <ExerciseGraph startDate={dateToString(this.dateXDaysAgo(NUMBER_OF_DAYS_IN_THE_PAST_TO_GET))}
-                                           endDate={dateToString(this.dateXDaysAgo(0))}
-                                           exerciseName={"Barbell Preacher Curl"}
-                                           exerciseRepRange={8}
-                                           workouts={this.state.workouts}
-                                           granularity={Granularity.DAY}
-                                           additionalTitleText={"(hypertrophy)"}
-                            />
-                        </GridColumn>
-                        <GridColumn>
-                            <ExerciseGraph startDate={dateToString(this.dateXDaysAgo(NUMBER_OF_DAYS_IN_THE_PAST_TO_GET))}
-                                           endDate={dateToString(this.dateXDaysAgo(0))}
-                                           exerciseName={"Cable Triceps Pushdown"}
-                                           exerciseRepRange={12}
-                                           workouts={this.state.workouts}
-                                           granularity={Granularity.DAY}
-                                           additionalTitleText={"(hypertrophy)"}
-                            />
-                        </GridColumn>
-                    </GridRow>
-
-
                 </Grid>
             </Container>
         )
     }
 }
 
-export
-{
-    WorkoutPanel
-}
-    ;
+export {WorkoutPanel};
