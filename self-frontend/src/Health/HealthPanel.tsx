@@ -1,6 +1,6 @@
 import React from "react";
 import {DefaultHttpApiBridge} from "conjure-client";
-import {Container, Grid} from "semantic-ui-react";
+import {Grid} from "semantic-ui-react";
 import {HealthService} from "conjure-self-api/self-health/healthService";
 import {IHealthDataPoint} from "conjure-self-api/self-workouts/healthDataPoint";
 import {HealthChart} from "./HealthChart";

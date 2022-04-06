@@ -2,7 +2,6 @@ import React from "react";
 import {IWorkout} from "conjure-self-api/self-workouts/workout";
 import {IExercise} from "conjure-self-api/self-workouts/exercise";
 import {ISet} from "conjure-self-api/self-workouts/set";
-import {ResponsiveLine} from "@nivo/line";
 import {dateToString} from "../Utils";
 import {HealthChart} from "../Health/HealthChart";
 
